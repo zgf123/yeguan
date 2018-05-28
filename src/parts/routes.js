@@ -26,6 +26,7 @@ import Browse from '../components/statis/Browse.vue'
 import ShareBrowse from '../components/statis/ShareBrowse.vue'
 import ShareBrowseDetail from '../components/statis/ShareBrowseDetail.vue'
 import Evaluate from '../components/statis/Evaluate.vue'
+import CapitalConfList from '../components/CapitalConf/list.vue'
 
 export default [
     {
@@ -254,6 +255,15 @@ export default [
             backUrl: '/statis',
             pageTitle: '产品评价统计',
             requiresAuth: true
+        }
+    },
+    {
+        path: '/capital',
+        component: CapitalConfList,
+        meta: {
+            backUrl: '/home',
+            pageTitle: '资产配置',
+            requiresAuth: false
         }
     },
     {

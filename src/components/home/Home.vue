@@ -109,7 +109,7 @@
 						signShow:false
 					},
 					{
-						link:'/statis',
+						link:'/capital',
 						class:'noafter nobefore',
 						imgSrc:'/public/img/home_pic3.png?v-0.1',
 						title:'资产配置',
