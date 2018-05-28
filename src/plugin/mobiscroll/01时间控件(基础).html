@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/mobiscroll.css"/>
+		<script src="js/mobiscrolljq.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mobiscroll.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="demos">
+			<label for="pickTime">日期时间</label>
+			<input type="text" name="appDateTime" id="pickTime" />
+		</div>
+		<script type="text/javascript">
+			var today=new Date();
+			var nextDay=new Date(new Date().getTime()+1000*60*60*24); //明天的时间
+			var startDay=new Date(today.getFullYear(),today.getMonth(),today.getDate(),today.getHours(),today.getMinutes());
+			var endDay=new Date(nextDay.getFullYear()+1,nextDay.getMonth(),nextDay.getDate(),23,50);
+			
+			//计算当年当月最后一天
+        	var nextM_firstD = new Date(today.getFullYear(),today.getMonth()+1,1); //下一个月第一天的值
+        	var curM_lastD=(new Date(nextM_firstD.getTime()-1000*60*60*24)).getDate(); //取当前月最后一天的值
+        	var last_date;
+        	if(today.getDate()==31&&(today.getMonth()+1)==12){	//判断当天是否是当年的最后一天
+    			last_date=0;
+    		}else if(today.getDate()==curM_lastD&&(today.getMonth()+1)!=12){	//判断当天是否是当月的最后一天
+    			last_date=1;
+    		}else{		//当天不是特殊日期
+    			last_date=2;
+    		}
+			
+			$("#pickTime").mobiscroll({
+				preset: 'datetime',		//日期类型【datatime】 【time】
+				theme: 'android-holo-light', //皮肤样式【android-holo-light】【android-ics light】【android-ics】【ios】
+				mode: 'scroller', //日期选择模式
+				display: 'bottom', //显示方式  	【modal】【inline】【bubble】【top】【bottom】
+				setText: 'ok',	//确定按钮中的文字
+				cancelText: '撤回',		//取消按钮中的文字
+				dateFormat:'yy-dd-mm-D',//表头输出的日期格式
+				dateOrder: 'yymmdd', //面板中日期排列格式
+				showNow: true,		//是否显示滚动到当前时间按钮
+				nowText: "回到当前时间",	//滚动到当前时间按钮里的文字
+				showLabel:true,		//是否显示列标题文字
+				yearText: '年', 		//面板中年月日文字
+				dayText: '日', 
+				monthText: '月',
+				hourText: '小时',
+				minuteText: '分钟',
+//				startYear: (new Date()).getFullYear(),		//开始年份
+//				endYear: (new Date()).getFullYear() + 2,		//结束年份
+				minDate: startDay, 		//开始时间
+				maxDate: endDay, 		//结束时间
+				stepMinute: 5,		//分钟的步长
+				stepHour: 1,		//小时的步长
+				fixedWidth: 55,  //每列的宽度
+				height: 40,		//每行的高度
+				rows: 3,		//设置有几行
+				lang: 'zh'		//设置语言，是否出现AM PM
+			});
+			$("#pickTime").mobiscroll('show');
+		</script>
+	</body>
+</html>

@@ -1,0 +1,227 @@
+.borT(@borderTop:#d9d9d9,@left:0){
+	position: relative;
+	&:before{
+		content: "";
+		position: absolute;
+		left: @left;
+		width: 100%;
+		height: 1px;
+		top: 0;
+		border-top: 1px solid @borderTop;
+		-webkit-transform-origin: 0 0;
+		transform-origin: 0 0;
+		-webkit-transform: scaleY(.5);
+		transform: scaleY(.5)
+	}
+}
+.borB(@borderBottom:#d9d9d9,@left:0){
+	position: relative;
+	&:after{
+		content: "";
+		position: absolute;
+		left: @left;
+		width: 100%;
+		height: 1px;
+		bottom: 0;
+		border-bottom: 1px solid @borderBottom;
+		-webkit-transform-origin: 0 100%;
+		transform-origin: 0 100%;
+		-webkit-transform: scaleY(.5);
+		transform: scaleY(.5);
+	}
+}
+
+.transform(@transform){
+    -webkit-transform: @transform;
+    transform: @transform;
+}
+.transition(@transition){
+    -webkit-transition: @transition;
+    transition: @transition;
+}
+
+
+/* lyui 开始  */
+body{
+	font-size: 16px;
+}
+.lyfont{font-size: 24px;}
+.lyicon{
+  display: block;
+  background-repeat:no-repeat ;
+  background-size: 100% 100%;
+  background-position: center center;
+  vertical-align: middle;
+  width: 22px;
+  height: 22px;
+  background-image: url("../images/icon_default.png");
+}
+
+/* -------头部---- */
+.nav-header{
+	position: fixed;
+	top:0;
+	left:0;
+	width: 100%;
+	height: 44px;
+	background-color: #fd4f4f;
+	line-height: 45px;
+	padding: 0 13px;
+	color: #fff;
+	.nav-title{
+		width: 100%;
+		position: absolute;
+		top:0;
+		left: 0;
+		text-align: center;
+		font-size: 16px;
+	}
+}
+
+.ly_container{
+	padding-bottom: 50px;
+}
+.lyui_tap_active {
+    tap-highlight-color: transparent;
+}
+.lyui_tap_active:active {
+    background-color: #ececec;
+}
+.lyui_cells_title+.lyui_cells{
+	margin-top: 0;
+}
+.lyui_cells_title {
+    margin-top: .77em;
+    margin-bottom: .3em;
+    padding-left: 15px;
+    padding-right: 15px;
+    color: #888;
+    font-size: 14px;
+}
+.lyui_cells {
+    margin-top: 1.17647059em;
+    background-color: #fff;
+    line-height: 1.41176471;
+    font-size: 16px;
+    overflow: hidden;
+    position: relative;
+    .borT();
+    .borB();
+}
+.lyui_cell {
+    padding: 10px 15px;
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    .borB(#d9d9d9,15px);
+}
+.lyui_cell_hd .lyfont {
+    font-size: 20px;
+    padding-right: 10px;
+    color: #ff3838;
+}
+.lyui_cell_hd .lyicon {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    img{
+    	width: 100%;
+    	height: 100%;
+    }
+}
+.lyui_cell_primary {
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+.lyui_label_desc {
+    font-size: 14px;
+    color: #666;
+}
+.lyui_cell_ft {
+    text-align: right;
+    color: #999;
+    .lyfont{
+    	font-size: 16px;
+    }
+}
+.lyui_no_group_title{
+	margin-top: 15px;
+}
+.lyui_divider{
+    padding: 10px 0;
+    color: #666;
+    font-size: 16px;
+    text-align: center;
+    position: relative;
+    &:before {
+	    content: '';
+	    display: table-cell;
+	    position: absolute;
+	    top: 50%;
+	    width: 100%;
+	    height: 1px;
+		background-color: #d9d9d9;
+	}
+	span{
+		background-color: #fff;
+		position: relative;
+		padding:0 1em;
+	}
+}
+/* flexbox */
+.lyui_flex_row {
+    box-direction: row;
+    box-orient: horizontal;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+}
+.lyui_flex_col {
+    box-orient: vertical;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    >.lyui_flexbox_item {
+	    width: 100%;
+	}
+}
+.lyui_flexbox_demo_wrap {
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+.lyui_flexbox {
+	line-height: 1.6;
+    width: 100%;
+    text-align: left;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    box-align: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    .lyui_flexbox_item {
+	    -webkit-box-flex: 1;
+	    -ms-flex: 1;
+	    flex: 1;
+	    min-width: 20px;
+	    &:first-child {
+		    margin-left: 0!important;
+		    margin-top: 0!important;
+		}
+	}
+}
+.lyui_flex_demo {
+    text-align: center;
+    color: #fff;
+    background-color: #ffac38;
+    border-radius: 4px;
+    background-clip: padding-box;
+}

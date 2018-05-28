@@ -1,0 +1,85 @@
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#the-canvas {
+				border: 1px solid black;
+			}
+		</style>
+		<!--<script src="pdf.js" type="text/javascript"></script>-->
+		<script src="pdf.js"></script>
+	</head>
+
+	<body>
+
+		<!-- <h1 id="h1">PDF.js 'Hello, world!' example</h1> -->
+
+		<div id="canvasbox"></div>
+		
+		<script type="text/javascript">
+			//跳转传参方法
+			function GetUrlParms(name){
+			    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+			    var r = window.location.search.substr(1).match(reg);
+			    if(r!=null)return  unescape(r[2]); return null;
+			} 
+
+			var url = GetUrlParms('url');
+			// console.log(url);
+			
+
+			// If absolute URL from the remote server is provided, configure the CORS
+			// header on that server.
+			//将此处的url替换即可~
+			var url = 'aaa.pdf';
+
+			// Disable workers to avoid yet another cross-origin issue (workers need
+			// the URL of the script to be loaded, and dynamically loading a cross-origin
+			// script does not work).
+			// PDFJS.disableWorker = true;
+
+			// The workerSrc property shall be specified.
+			PDFJS.workerSrc = 'pdf.worker.js';
+
+			// Asynchronous download of PDF
+			var loadingTask = PDFJS.getDocument(url);
+			PDFJS.getDocument(url).then(function(pdf) {
+				console.log(pdf);
+				for (var i=1;i<pdf.numPages+1;i++) {
+					renderPDF(pdf,i);
+				}
+			});
+			
+			function renderPDF(pdf,pageNumber){
+				var canvasbox = document.getElementById('canvasbox');
+				var html = '<canvas id="the-canvas'+pageNumber+'"></canvas>';
+				canvasbox.innerHTML+=html;
+				
+				pdf.getPage(pageNumber).then(function(page) {
+//					console.log('Page loaded');
+					var scale = 1.7;
+					var viewport = page.getViewport(scale);
+
+					// Prepare canvas using PDF page dimensions
+					var canvas = document.getElementById('the-canvas'+pageNumber);
+					var context = canvas.getContext('2d');
+					canvas.height = viewport.height;
+					canvas.width = viewport.width;
+
+					// Render PDF page into canvas context
+					var renderContext = {
+						canvasContext: context,
+						viewport: viewport
+					};
+					var renderTask = page.render(renderContext);
+					renderTask.then(function() {
+//						console.log('Page rendered');
+					});
+				});
+			}
+		</script>
+	</body>
+
+</html>

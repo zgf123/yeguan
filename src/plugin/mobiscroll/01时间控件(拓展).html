@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/mobiscroll.css"/>
+		<script src="js/mobiscrolljq.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mobiscroll.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="demos">
+			<label for="pickTime">日期时间</label>
+			<input type="text" name="appDateTime" id="pickTime" />
+		</div>
+		<script type="text/javascript">			
+			var today=new Date();
+			var nextDay=new Date(new Date().getTime()+1000*60*60*24); //明天的时间
+			$("#pickTime").mobiscroll({
+				preset: 'datetime'		//日期类型【datatime】 【time】
+				,theme: 'android-holo-light'  //皮肤样式【android-holo-light】【android-ics light】【android-ics】【ios】
+				,mode: 'scroller'  //日期选择模式
+				,display: 'bottom' //显示方式  	【modal】【inline】【bubble】【top】【bottom】
+//				,lang: 'zh'			//设置语言，是否出现AM PM
+				,amText:'上午'
+				,pmText:'下午'
+				//----------------拓展-----------------
+				,buttons: [ 		//新增按钮
+				    'set',
+				    'cancel',
+				    'now',
+				    { 
+				        text: '新增按钮1',
+				        icon: 'checkmark',
+				        cssClass: 'my-btn', 
+				        handler: function (event, inst) { 
+				            alert('Custom button clicked!'); 
+				        } 
+				    },
+				    { 
+				        text: '新增按钮2',
+				        icon: 'checkmark',
+				        cssClass: 'my-btn', 
+				        handler: function (event, inst) { 
+				            alert('Custom button clicked!'); 
+				        } 
+				    }
+				]
+				,nowText: "now"		//确定按钮文字
+				,setText:'ok'		//取消按钮文字
+				,cancelText:'no'	//回到当前时间按钮文字
+				,context:'body'	//弹窗在哪个区域内
+				,defaultValue:nextDay	//显示默认的时间，如果没有显示当前的时间
+				,disabled:false			//强制显示或隐藏弹层
+				,closeOnOverlay:true	//是否点击遮罩层关闭弹窗
+				,invalid: [
+//				    '12/24', // 12.24不能选择
+				    '5', // 每个月5号不能选择
+//				    'w0', // 星期天的日期不能选择(w0,w1,w2,w3,w4,w5,w6)
+//				    'w6',	//星期六不能选择
+//				    { start: '00:00', end: '08:59' }, // 0点到8点之间不能选择
+//				    { start: '16:00', end: '23:59' }, // 16点到23点不能选择
+//				    { d: 'w6', start: '00:00', end: '07:59' }, // 周六0点到7点之间不能选择
+//				    { d: 'w6', start: '17:00', end: '23:59' }, // 周六17点到23点之间不能选择
+				    new Date(2016,11,05) // 此插件不可以隐藏确定年份的某个日期(此参数无效)
+				]
+				,dateOrder : 'yymmddDD' //面板中日期排列格式 
+				,dateFormat:'yy-dd-mm-D'	//表头显示的格式
+				,dayNames:['周日', '周一', '周二', '周三', '周四', '周五', '周六']	//wheel星期显示文字
+				,dayNamesShort:['周日', '周一', '周二', '周三', '周四', '周五', '周六']	//表头星期显示文字
+			});
+			$("#pickTime").mobiscroll('show');
+		</script>
+	</body>
+</html>

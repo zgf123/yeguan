@@ -1,0 +1,119 @@
+.borT(@borderTop:#d9d9d9,@left:0){
+	position: relative;
+	&:before{
+		content: "";
+		position: absolute;
+		left: @left;
+		width: 100%;
+		height: 1px;
+		top: 0;
+		border-bottom: 1px solid @borderTop;
+		-webkit-transform-origin: 0 0;
+		transform-origin: 0 0;
+		-webkit-transform: scaleY(.5);
+		transform: scaleY(.5)
+	}
+}
+.borB(@borderBottom:#d9d9d9,@left:0){
+	position: relative;
+	&:after{
+		content: "";
+		position: absolute;
+		left: @left;
+		width: 100%;
+		height: 1px;
+		bottom: 0;
+		border-bottom: 1px solid @borderBottom;
+		-webkit-transform-origin: 0 100%;
+		transform-origin: 0 100%;
+		-webkit-transform: scaleY(.5);
+		transform: scaleY(.5);
+	}
+}
+.borL(@borderLeft:#d9d9d9){
+	position: relative;
+	&:after{
+		content: "";
+		position: absolute;
+		left: 0;
+		width: 1px;
+		height: 100%;
+		top: 0;
+		background-color: @borderLeft;
+		-webkit-transform-origin: 0 0;
+		transform-origin: 0 0;
+		-webkit-transform: scaleX(.5);
+		transform: scaleX(.5);
+	}
+}
+.Context{
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top:0;
+	left:0;
+	display: none;
+}
+.zgf{
+	.dw, .dwo {
+	    -webkit-transform: translate3d(0, 0, 0); 
+		transform:translate3d(0, 0, 0);
+	}
+	&.mbsc-android-holo .dwv {
+	    color: #ff7e00; 
+	    line-height: 48px;
+	    border-bottom: 0;
+	    font-size: 15px;
+	    .borB(#ff7e00);
+	}
+	&.mbsc-android-holo-light .dw-li {
+	    color: #333;
+	    font-weight: normal;
+	    font-size: 14px;
+	}
+	&.mbsc-android-holo-light .dw-li.dw-sel {
+	    color: #333;
+	    font-weight: bolder;
+	    font-size: 15px;
+	}
+	&.mbsc-android-holo .dwwol {
+	    display: block;
+	    width: 60%;
+	    left: 20%;
+	    border-top: 0;
+	    border-bottom: 0;
+	    position: absolute !important;
+	    margin-top:-20px !important;
+	    .borT(#ff7e00);
+	    .borB(#ff7e00);
+	}
+	&.mbsc-android-holo .dw-hl {
+		background: transparent;
+	}
+	&.mbsc-android-holo .dwcc{
+		padding: 10px 26px;
+	}
+	&.mbsc-android-holo .dwb {
+	    height: 44px;
+	    line-height: 44px;
+	    color: #333;
+	    font-size: 14px;
+	}
+	&.mbsc-android-holo .dwb-a {
+	    background-color: #ddd;
+	}
+	&.mbsc-android-holo-light .dwbc {
+	    border-top: 0;
+	    .borT(#999);
+	    padding-top:1px;
+	}
+	&.mbsc-android-holo-light .dwbw:last-child .dwb {
+	    border-left: 0;
+	    .borL(#999);
+	}
+	&.mbsc-android-holo-light .dwwo{
+		z-index: 99999;
+		-webkit-transform: translate3d(0, 0, 0); 
+		transform:translate3d(0, 0, 0);
+	}
+}
