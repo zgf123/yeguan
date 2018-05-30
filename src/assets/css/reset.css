@@ -252,3 +252,6 @@ b{
 .hide {
 	display: none;
 }
+[v-cloak] {
+	display: none;
+}

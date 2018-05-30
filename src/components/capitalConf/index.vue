@@ -1,14 +1,15 @@
 <template>
     <div>
         <component :is="'Header'">
-            <router-link slot="search" tag="div" class="zengjia" :to="''"><img src="/public/img/jiahao.png" alt=""></router-link>
+            <router-link slot="search" tag="div" class="zengjia" :to="'/capital/edit'"><img src="/public/img/jiahao.png" alt=""></router-link>
         </component>
         <div class="container Page">
+            <p class="noinfo" v-if="!resdata.length">暂无配置列表</p>
             <div class="item_box">
                 <div class="item bor_b" v-for="(item,index) in resdata" :key="index">
                     <div class="title">{{item.title}}</div>
                     <div class="time">{{item.created_at}}
-                        <template v-if="item.is_send == 1">
+                        <template v-if="item.status == 1">
                             <span class="send">已发送</span>
                         </template>
                         <template v-else>
@@ -16,9 +17,14 @@
                         </template>
                     </div>
                     <div class="caozuo cr">
-                        <div class="btn edit">继续编辑</div>
-                        <div class="btn history" v-if="item.is_send == 1">发送记录</div>
-                        <div class="btn delete" @click="deleteConf(id)">删除</div>
+                        <template v-if="item.status == 1">
+                            <router-link tag=div :to="'/capital/show/'+item.id" class="btn edit">查看详情</router-link>
+                            <router-link tag=div :to="'/capital/sendhistory/'+item.id+'?title='+item.title" class="btn history">发送记录</router-link>
+                        </template>
+                        <template v-else>
+                            <router-link tag=div :to="'/capital/edit/'+item.id" class="btn edit">继续编辑</router-link>
+                        </template>
+                        <div class="btn delete" @click="deleteConf(item.id)">删除</div>
                     </div>
                 </div>
             </div>
@@ -41,11 +47,11 @@
             fetchData(){
                 let _this = this;
 				var data = this.qs.stringify({
-					token:localStorage.token
+					token:'78d475112bd4ba5b359570440b862b94'
 				});
-                this.axios.post('/asset/index',data).then(function(res){
+                this.axios.post('http://manager.yeguan.com/asset/index',data).then(function(res){
                     if(res.data.code == 1){
-                        _this.resdata = res.data.data;
+                        _this.resdata = res.data.data || [];
                     }else{
                         _this.$store.commit('msg','请求错误，请重试');
                     }
@@ -59,10 +65,10 @@
                     yes:function(index){
                         layer.close(index);
                         let data = _this.qs.stringify({
-                            token:localStorage.token,
+                            token:'78d475112bd4ba5b359570440b862b94',
                             asset_id:conf_id
-                        })
-                        _this.axios.post('/asset/delete',data).then(function(res){
+                        });
+                        _this.axios.post('http://manager.yeguan.com/asset/delete',data).then(function(res){
                             if(res.data.code == 1){
                                 _this.$store.commit('msg', '删除成功');
                                 _this.fetchData();
@@ -78,6 +84,14 @@
 <style lang="less" scoped>
     .container{
         background-color: #fff;
+        padding-bottom: 40px;
+    }
+    .noinfo{
+        text-align: center;
+        color: #aaa;
+        font-size: 13px;
+        line-height: 1.6;
+        padding: 15px;
     }
     .zengjia{
         position: absolute;

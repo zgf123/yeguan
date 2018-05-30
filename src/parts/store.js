@@ -6,9 +6,9 @@ Vue.use(Vuex);
 
 let store = new Vuex.Store({
     state: {
-        // baseurl:'http://manager.pvwyeguan.fminxiang.com',
+        baseurl:'http://manager.pvwyeguan.fminxiang.com',
         // baseurl:'http://manager.yeguan.fminxiang.com',
-		baseurl:'http://manager.yeguan.com',
+		// baseurl:'http://manager.yeguan.com',
         loading: false,
         isFetchData: true,
         pageTitle:'业管系统'

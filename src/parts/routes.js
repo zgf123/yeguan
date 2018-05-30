@@ -26,7 +26,14 @@ import Browse from '../components/statis/Browse.vue'
 import ShareBrowse from '../components/statis/ShareBrowse.vue'
 import ShareBrowseDetail from '../components/statis/ShareBrowseDetail.vue'
 import Evaluate from '../components/statis/Evaluate.vue'
-import CapitalConfList from '../components/CapitalConf/list.vue'
+
+import CapitalConfIndex from '../components/CapitalConf/index.vue'
+import CapitalConfShow from '../components/CapitalConf/show.vue'
+import CapitalConfEdit from '../components/CapitalConf/edit.vue'
+import CapitalConfSendhistory from '../components/CapitalConf/sendhistory.vue'
+import CapitalConfClient from '../components/CapitalConf/client.vue'
+import CapitalConfAddproduct from '../components/CapitalConf/addproduct.vue'
+
 
 export default [
     {
@@ -259,11 +266,56 @@ export default [
     },
     {
         path: '/capital',
-        component: CapitalConfList,
+        component: CapitalConfIndex,
         meta: {
             backUrl: '/home',
             pageTitle: '资产配置',
-            requiresAuth: false
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/capital/show/:id',
+        component: CapitalConfShow,
+        meta: {
+            backUrl: '/capital',
+            pageTitle: '',
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/capital/edit/:id?',
+        component: CapitalConfEdit,
+        meta: {
+            backUrl: '/capital',
+            pageTitle: '添加资产配置报告',
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/capital/client/:id',
+        component: CapitalConfClient,
+        meta: {
+            backUrl: '/capital',
+            pageTitle: '',
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/capital/sendhistory/:id',
+        component: CapitalConfSendhistory,
+        meta: {
+            backUrl: '/capital',
+            pageTitle: '发送记录',
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/capital/addproduct/:id',
+        component: CapitalConfAddproduct,
+        meta: {
+            backUrl: '/capital',
+            pageTitle: '添加产品',
+            requiresAuth: true
         }
     },
     {
