@@ -8,9 +8,9 @@
         <div class="container Page">
             <div class="types bor_b">
                 <ul class="flex flex_align">
-                    <li class="flex_1"><span class="on"><img src="/public/img/icon_duihao.png" alt=""></span>股权类</li>
-                    <li class="flex_1"><span><img src="/public/img/icon_duihao.png" alt=""></span>固收类</li>
-                    <li class="flex_1"><span><img src="/public/img/icon_duihao.png" alt=""></span>保险类</li>
+                    <li class="flex_1"><span :class="data.type=='stoke' ? 'on' : ''"><img src="/public/img/icon_duihao.png" alt=""></span>股权类</li>
+                    <li class="flex_1"><span :class="data.type=='fixed' ? 'on' : ''"><img src="/public/img/icon_duihao.png" alt=""></span>固收类</li>
+                    <li class="flex_1"><span :class="data.type=='insurance' ? 'on' : ''"><img src="/public/img/icon_duihao.png" alt=""></span>保险类</li>
                 </ul>
             </div>
             <div class="form">
@@ -75,20 +75,26 @@
                 });
             },
             submitData(){
-                let _this = this;
+                let _this = this, url='';
                 var data = {
                     token:localStorage.token,
-                    asset_id:_this.id,
                     product_id:_this.data.product_id,
                     product_name:_this.data.product_name,
                     suggest:_this.data.suggest,
                     type:_this.data.type
                 }
+                //判断是新增还是编辑
+                if(_this.product_id){
+                    $.extend(data,{asset_product_id:_this.product_id});
+                    url = '/asset/saveproduct';
+                }else{
+                    url = '/asset/addproduct';
+                    $.extend(data,{asset_id:_this.id});
+                }
+                
+                //验证
                 if(data.product_name == ''){
                     _this.$store.commit('msg','请输入产品标题');
-                    return false;
-                }else if(data.product_id == ''){
-                    _this.$store.commit('msg','该产品不存在');
                     return false;
                 }else if(data.suggest == ''){
                     _this.$store.commit('msg','请输入推荐建议');
@@ -96,9 +102,9 @@
                 }
 
 				data = this.qs.stringify(data);
-                this.axios.post('/asset/addproduct',data).then(function(res){
+                this.axios.post(url,data).then(function(res){
                     if(res.data.code == 1){
-                        _this.$store.commit('msg','添加成功');
+                        _this.$store.commit('msg','保存成功');
                         setTimeout(function(){
                             _this.$router.push({
                                 path:'/capital/edit/'+_this.id
@@ -137,7 +143,11 @@
             //搜索产品
             searchProduct(){
                 let _this = this;
-                $('.result').show();
+                if(_this.productData.length>0){
+                    $('.result').show();
+                }else{
+                    $('.result').hide();
+                }
                 var data = {
                     token:localStorage.token,
                     product_name:this.data.product_name
@@ -145,7 +155,7 @@
                 data = this.qs.stringify(data);
                 this.axios.post('/asset/getproduct',data).then(function(res){
                     if(res.data.code == 1){
-                        _this.productData = res.data.data;
+                        _this.productData = res.data.data || [];
                     }
                 });
             },

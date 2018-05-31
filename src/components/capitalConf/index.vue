@@ -60,7 +60,7 @@
             deleteConf(conf_id){
                 let _this=this;
                 layer.open({
-                    content:'确定要删除进账信息吗？',
+                    content:'确定要删除该条资产配置报告吗？',
                     btn:['确定','取消'],
                     yes:function(index){
                         layer.close(index);

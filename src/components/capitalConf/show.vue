@@ -7,9 +7,9 @@
         <div class="container Page">
             <div>
                 <ul class="product cr">
-                    <li>股权类产品：{{Math.round(resdata.stock_fund_percent) || '0'}}%</li>
-                    <li>保险类产品：{{Math.round(resdata.fixed_fund_percent) || '0'}}%</li>
-                    <li>固守类产品：{{Math.round(resdata.insurance_fund_percent) || '0'}}%</li>
+                    <li v-if="resdata.stock_fund_percent && resdata.stock_fund_percent!=0">股权类产品：{{Math.round(resdata.stock_fund_percent) || '0'}}%</li>
+                    <li v-if="resdata.fixed_fund_percent &&  resdata.fixed_fund_percent!=0">保险类产品：{{Math.round(resdata.fixed_fund_percent) || '0'}}%</li>
+                    <li v-if="resdata.insurance_fund_percent &&  resdata.insurance_fund_percent!=0">固守类产品：{{Math.round(resdata.insurance_fund_percent) || '0'}}%</li>
                 </ul>
             </div>
             <div class="confdetail">
@@ -171,6 +171,7 @@
                         font-weight: normal;
                         padding-bottom: 10px;
                         font-size: 15px;
+                        color: #333;
                     }
                     p{
                         line-height: 1.6;

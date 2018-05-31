@@ -15,12 +15,12 @@
                     <div class="flex_1 ipt"><input type="tel" placeholder="请输入配置比例" maxlength="3" v-model="resdata.stock_fund_percent">&nbsp;%</div>
                 </li>
                 <li class="flex flex_align">
-                    <div>保险类：</div>
-                    <div class="flex_1 ipt"><input type="tel" placeholder="请输入配置比例" maxlength="3" v-model="resdata.insurance_fund_percent">&nbsp;%</div>
+                    <div>固收类：</div>
+                    <div class="flex_1 ipt"><input type="tel" placeholder="请输入配置比例" maxlength="3" v-model="resdata.fixed_fund_percent">&nbsp;%</div>
                 </li>
                 <li class="flex flex_align">
-                    <div>固守类：</div>
-                    <div class="flex_1 ipt"><input type="tel" placeholder="请输入配置比例" maxlength="3" v-model="resdata.fixed_fund_percent">&nbsp;%</div>
+                    <div>保险类：</div>
+                    <div class="flex_1 ipt"><input type="tel" placeholder="请输入配置比例" maxlength="3" v-model="resdata.insurance_fund_percent">&nbsp;%</div>
                 </li>
             </ul>
             <div class="confdetail">
@@ -134,8 +134,15 @@
 
                 delete data.products;
                 //验证
+                var total = Number(data.stock_fund_percent) + Number(data.fixed_fund_percent) + Number(data.insurance_fund_percent);
                 if(data.title == ''){
                     this.$store.commit('msg', '请输入配置报告标题');
+                    return false;
+                }else if(total>100){
+                    this.$store.commit('msg', '配置比例总和不能大于100%');
+                    return false;
+                }else if(total<100){
+                    this.$store.commit('msg', '配置比例总和不能小于100%');
                     return false;
                 }
                 data.token = localStorage.token;
@@ -301,6 +308,7 @@
                         font-weight: normal;
                         padding-bottom: 10px;
                         font-size: 15px;
+                        color: #333;
                     }
                     p{
                         line-height: 1.6;
