@@ -1,16 +1,16 @@
 <template>
     <div>
         <component :is="'Header'">
-            <div slot="title" class="com_title text_o">{{$route.query.title}}</div>
+            <div slot="title" class="com_title text_o">{{$route.query.title}}的发送记录</div>
         </component>
         <div class="container Page">
             <!-- <p class="noinfo" v-if="!resdata.length">暂无发送记录</p> -->
             <div class="history">
                 <ul>
-                    <li class="flex flex_align" :class="item.status ? 'on':''" v-for="(item,index) in resdata" :key="index">
+                    <li class="flex flex_align" :class="item.is_read ? 'on':''" v-for="(item,index) in resdata" :key="index">
                         <div class="flex_1">{{item.name}}</div>
-                        <div class="flex_1">发送成功</div>
-                        <div class="flex_1">{{item.status ? '已查阅' : '未查阅'}}</div>
+                        <div class="flex_1">{{item.status ? '发送成功' : '发送失败'}}</div>
+                        <div class="flex_1">{{item.is_read ? '已查阅' : '未查阅'}}</div>
                     </li>
                 </ul>
             </div>
@@ -33,10 +33,10 @@
             fetchData(){
                 let _this = this;
 				var data = this.qs.stringify({
-                    token:'78d475112bd4ba5b359570440b862b94',
+                    token:localStorage.token,
                     asset_id:_this.$route.params.id
 				});
-                this.axios.post('http://manager.yeguan.com/asset/getsend',data).then(function(res){
+                this.axios.post('/asset/getsend',data).then(function(res){
                     if(res.data.code == 1){
                         _this.resdata = res.data.data || [];
                     }else{

@@ -1,7 +1,7 @@
 <template>
     <div>
         <component :is="'Header'">
-            <div slot="title" class="com_title text_o">添加产品</div>
+            <div slot="title" class="com_title text_o">{{product_id?'编辑产品配置':'添加产品配置'}}</div>
             <div slot="back" class="nav_back btn_active" @click="navBack"></div>
             <div slot="search" class="zengjia" @click="submitData">保存</div>
         </component>
@@ -61,12 +61,12 @@
             fetchData(){
                 let _this = this;
                 var data = {
-                    token:'78d475112bd4ba5b359570440b862b94',
+                    token:localStorage.token,
                     asset_product_id:_this.product_id
                 }
 
 				data = this.qs.stringify(data);
-                this.axios.post('http://manager.yeguan.com/asset/productdetail',data).then(function(res){
+                this.axios.post('/asset/productdetail',data).then(function(res){
                     if(res.data.code == 1){
                         _this.data = $.extend({},res.data.data);
                     }else{
@@ -77,7 +77,7 @@
             submitData(){
                 let _this = this;
                 var data = {
-                    token:'78d475112bd4ba5b359570440b862b94',
+                    token:localStorage.token,
                     asset_id:_this.id,
                     product_id:_this.data.product_id,
                     product_name:_this.data.product_name,
@@ -96,7 +96,7 @@
                 }
 
 				data = this.qs.stringify(data);
-                this.axios.post('http://manager.yeguan.com/asset/addproduct',data).then(function(res){
+                this.axios.post('/asset/addproduct',data).then(function(res){
                     if(res.data.code == 1){
                         _this.$store.commit('msg','添加成功');
                         setTimeout(function(){
@@ -139,11 +139,11 @@
                 let _this = this;
                 $('.result').show();
                 var data = {
-                    token:'78d475112bd4ba5b359570440b862b94',
+                    token:localStorage.token,
                     product_name:this.data.product_name
                 }
                 data = this.qs.stringify(data);
-                this.axios.post('http://manager.yeguan.com/asset/getproduct',data).then(function(res){
+                this.axios.post('/asset/getproduct',data).then(function(res){
                     if(res.data.code == 1){
                         _this.productData = res.data.data;
                     }

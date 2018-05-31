@@ -1,7 +1,7 @@
 <template>
     <div>
         <component :is="'Header'">
-            <!-- <div slot="title" class="com_title text_o">自定义标题自定义标题自定义标题自定义标题自定义标题自定义标题自定义标题</div> -->
+            <div slot="title" class="com_title text_o">{{isAdd?'添加资产配置报告':'编辑资产配置报告'}}</div>
             <div class="zengjia" slot="search" @click="addProduct">添加产品</div>
         </component>
         <div class="container Page">
@@ -33,8 +33,8 @@
                             <h3>{{item.product_name}}</h3>
                             <p>{{item.suggest}}</p>
                             <div class="btns cr">
-                                <div class="btn" @click="deleteProduct(item.product_id)">删除</div>
-                                <router-link class="btn" :to="'/capital/addproduct/'+params_id+'?product_id='+item.product_id">重新编辑</router-link>
+                                <div class="btn" @click="deleteProduct(item.id)">删除</div>
+                                <router-link class="btn" :to="'/capital/addproduct/'+params_id+'?product_id='+item.id">重新编辑</router-link>
                             </div>
                         </li>
                     </ul>
@@ -46,8 +46,8 @@
                             <h3>{{item.product_name}}</h3>
                             <p>{{item.suggest}}</p>
                             <div class="btns cr">
-                                <div class="btn" @click="deleteProduct(item.product_id)">删除</div>
-                                <div class="btn">重新编辑</div>
+                                <div class="btn" @click="deleteProduct(item.id)">删除</div>
+                                <router-link class="btn" :to="'/capital/addproduct/'+params_id+'?product_id='+item.id">重新编辑</router-link>
                             </div>
                         </li>
                     </ul>
@@ -59,33 +59,13 @@
                             <h3>{{item.product_name}}</h3>
                             <p>{{item.suggest}}</p>
                             <div class="btns cr">
-                                <div class="btn" @click="deleteProduct(item.product_id)">删除</div>
-                                <div class="btn">重新编辑</div>
+                                <div class="btn" @click="deleteProduct(item.id)">删除</div>
+                                <router-link class="btn" :to="'/capital/addproduct/'+params_id+'?product_id='+item.id">重新编辑</router-link>
                             </div>
                         </li>
                     </ul>
                 </div>
             </div>
-            <!-- <div class="confdetail">
-                <h1><span>资产配置详情</span></h1>
-                <div class="item">
-                    <h2>股权类产品：</h2>
-                    <ul>
-                        <li>
-                            <h3>明德教育基金劣后级</h3>
-                            <p>这里是详情介绍，这里是详情介绍，这里是详情介绍，这里是详情介绍，这里是详情介绍，这里是详情介绍，这里是详情介绍。</p>
-                            <div class="btns cr">
-                                <div class="btn">删除</div>
-                                <div class="btn">重新编辑</div>
-                            </div>
-                        </li>
-                        <li>
-                            <h3>明德教育基金劣后级</h3>
-                            <p>这里是详情介绍，这里是详情介绍，这里是详情介绍，这里是详情介绍，这里是详情介绍，这里是详情介绍，这里是详情介绍。</p>
-                        </li>
-                    </ul>
-                </div>
-            </div> -->
         </div>
         <div class="savebtn cr">
             <div class="btn save" @click="saveAll()">保存</div>
@@ -127,10 +107,10 @@
             fetchData(){
                 let _this = this;
 				var data = this.qs.stringify({
-                    token:'78d475112bd4ba5b359570440b862b94',
+                    token:localStorage.token,
                     asset_id:_this.$route.params.id
 				});
-                this.axios.post('http://manager.yeguan.com/asset/detail',data).then(function(res){
+                this.axios.post('/asset/detail',data).then(function(res){
                     if(res.data.code == 1){
                         _this.resdata = res.data.data;
                         _this.resdata.products.stock = res.data.data.products.stock || [];
@@ -146,9 +126,9 @@
                 var url='';
                 var data = $.extend({},this.resdata);
                 if(this.isAdd){
-                    url = 'http://manager.yeguan.com/asset/add';
+                    url = '/asset/add';
                 }else{
-                    url = 'http://manager.yeguan.com/asset/save';
+                    url = '/asset/save';
                     data.asset_id = data.id;
                 }
 
@@ -158,7 +138,7 @@
                     this.$store.commit('msg', '请输入配置报告标题');
                     return false;
                 }
-                data.token = '78d475112bd4ba5b359570440b862b94';
+                data.token = localStorage.token;
                 data = this.qs.stringify(data);
 
                 this.axios.post(url,data).then(function(res){
@@ -193,12 +173,12 @@
                     yes:function(index){
                         layer.close(index);
                         var data = {
-                            token:'78d475112bd4ba5b359570440b862b94',
+                            token:localStorage.token,
                             asset_product_id:product_id,
                         }
                         data = _this.qs.stringify(data);
 
-                        _this.axios.post('http://manager.yeguan.com/asset/deleteproduct',data).then(function(res){
+                        _this.axios.post('/asset/deleteproduct',data).then(function(res){
                             if(res.data.code == 1){
                                 _this.$store.commit('msg','删除成功');
                                 _this.fetchData();
@@ -213,6 +193,11 @@
                 this.addProduct('index');
             },
             sendClient(){
+                let data = this.resdata.products;
+                if(data.stock.length==0 && data.insurance.length==0 && data.fixed.length==0){
+                    this.$store.commit('msg', '请先添加资产配置');
+                    return false;
+                }
                 this.addProduct('client');
             }
         }

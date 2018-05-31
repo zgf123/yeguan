@@ -47,9 +47,9 @@
             fetchData(){
                 let _this = this;
 				var data = this.qs.stringify({
-					token:'78d475112bd4ba5b359570440b862b94'
+					token:localStorage.token,
 				});
-                this.axios.post('http://manager.yeguan.com/asset/index',data).then(function(res){
+                this.axios.post('/asset/index',data).then(function(res){
                     if(res.data.code == 1){
                         _this.resdata = res.data.data || [];
                     }else{
@@ -65,10 +65,10 @@
                     yes:function(index){
                         layer.close(index);
                         let data = _this.qs.stringify({
-                            token:'78d475112bd4ba5b359570440b862b94',
+                            token:localStorage.token,
                             asset_id:conf_id
                         });
-                        _this.axios.post('http://manager.yeguan.com/asset/delete',data).then(function(res){
+                        _this.axios.post('/asset/delete',data).then(function(res){
                             if(res.data.code == 1){
                                 _this.$store.commit('msg', '删除成功');
                                 _this.fetchData();

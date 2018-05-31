@@ -61,10 +61,10 @@
             fetchData(){
                 let _this = this;
 				var data = this.qs.stringify({
-                    token:'78d475112bd4ba5b359570440b862b94',
+                    token:localStorage.token,
                     asset_id:_this.$route.params.id
 				});
-                this.axios.post('http://manager.yeguan.com/asset/getmember',data).then(function(res){
+                this.axios.post('/asset/getmember',data).then(function(res){
                     if(res.data.code == 1){
                         _this.resdata = res.data.data;
                     }else{
@@ -97,11 +97,11 @@
                 let _this = this;
                 if(_this.member_ids.length == 0) return false;
 				var data = this.qs.stringify({
-                    token:'78d475112bd4ba5b359570440b862b94',
+                    token:localStorage.token,
                     asset_id:_this.$route.params.id,
                     member_ids:_this.member_ids
 				});
-                this.axios.post('http://manager.yeguan.com/asset/addsend',data).then(function(res){
+                this.axios.post('/asset/addsend',data).then(function(res){
                     if(res.data.code == 1){
                         _this.$store.commit('msg','发送成功');
                         _this.$router.push({

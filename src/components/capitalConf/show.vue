@@ -7,9 +7,9 @@
         <div class="container Page">
             <div>
                 <ul class="product cr">
-                    <li>股权类产品：{{Math.round(resdata.stock_fund_percent*100) || '0'}}%</li>
-                    <li>保险类产品：{{Math.round(resdata.fixed_fund_percent*100) || '0'}}%</li>
-                    <li>固守类产品：{{Math.round(resdata.insurance_fund_percent*100) || '0'}}%</li>
+                    <li>股权类产品：{{Math.round(resdata.stock_fund_percent) || '0'}}%</li>
+                    <li>保险类产品：{{Math.round(resdata.fixed_fund_percent) || '0'}}%</li>
+                    <li>固守类产品：{{Math.round(resdata.insurance_fund_percent) || '0'}}%</li>
                 </ul>
             </div>
             <div class="confdetail">
@@ -68,10 +68,10 @@
             fetchData(){
                 let _this = this;
 				var data = this.qs.stringify({
-                    token:'78d475112bd4ba5b359570440b862b94',
+                    token:localStorage.token,
                     asset_id:_this.$route.params.id
 				});
-                this.axios.post('http://manager.yeguan.com/asset/detail',data).then(function(res){
+                this.axios.post('/asset/detail',data).then(function(res){
                     if(res.data.code == 1){
                         _this.resdata = res.data.data;
                         _this.resdata.products.stock = res.data.data.products.stock || [];
