@@ -8,7 +8,7 @@
         <div class="container Page">
             <div class="types bor_b">
                 <ul class="flex flex_align">
-                    <li class="flex_1"><span :class="data.type=='stoke' ? 'on' : ''"><img src="/public/img/icon_duihao.png" alt=""></span>股权类</li>
+                    <li class="flex_1"><span :class="data.type=='stock' ? 'on' : ''"><img src="/public/img/icon_duihao.png" alt=""></span>股权类</li>
                     <li class="flex_1"><span :class="data.type=='fixed' ? 'on' : ''"><img src="/public/img/icon_duihao.png" alt=""></span>固收类</li>
                     <li class="flex_1"><span :class="data.type=='insurance' ? 'on' : ''"><img src="/public/img/icon_duihao.png" alt=""></span>保险类</li>
                 </ul>
