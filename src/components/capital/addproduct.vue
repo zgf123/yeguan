@@ -3,7 +3,8 @@
         <component :is="'Header'">
             <div slot="title" class="com_title text_o">{{product_id?'编辑产品配置':'添加产品配置'}}</div>
             <div slot="back" class="nav_back btn_active" @click="navBack"></div>
-            <div slot="search" class="zengjia" @click="submitData">保存</div>
+            <div slot="search" class="zengjia" v-if="id == 'template'" @click="tempSave">保存</div>
+            <div slot="search" class="zengjia" v-else @click="submitData">保存</div>
         </component>
         <div class="container Page">
             <div class="types bor_b">
@@ -166,6 +167,49 @@
                 this.data.product_name = product_name;
                 this.data.product_id = product_id;
                 $('.result').hide();
+            },
+            //模板保存数据
+            tempSave(){
+                let _this = this;
+                var data = {
+                    product_name:_this.data.product_name,
+                    suggest:_this.data.suggest,
+                    type:_this.data.type
+                }
+
+                //验证
+                if(data.product_name == ''){
+                    _this.$store.commit('msg','请输入产品标题');
+                    return false;
+                }else if(data.suggest == ''){
+                    _this.$store.commit('msg','请输入推荐建议');
+                    return false;
+                }
+                
+                let tempData = JSON.parse(localStorage.tempData);
+                tempData.products[data.type].push({
+                    product_name:data.product_name,
+                    suggest:data.suggest
+                });
+
+                // savetemplate
+                var savedata = {
+                    token:localStorage.token,
+                    template_data:tempData
+                }
+                savedata = this.qs.stringify(savedata);
+                this.axios.post('/asset/savetemplate',savedata).then(function(res){
+                    console.log(res.data);
+                    if(res.data.code == 1){
+                        _this.$store.commit('msg', '保存成功');
+                        localStorage.removeItem('tempData');
+                        setTimeout(function(){
+                            _this.$router.push({
+                                path:'/capital/edit/template'
+                            });
+                        },1500);
+                    }
+                });
             }
         }
     }

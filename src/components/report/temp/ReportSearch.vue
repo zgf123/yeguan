@@ -37,9 +37,9 @@
         <!-- 上月prev 全部all   time-->
         <!-- 进账 start_2  到期end_1    order -->
         <div class="row flex_align bor_b">
-            <div class="label">客户姓名</div>
+            <div class="label">关键词</div>
             <div class="flex_1">
-                <input class="time" type="text" placeholder="请输入" v-model="searchCondition.keyword">
+                <input class="time" type="text" placeholder="客户名字或产品名称" v-model="searchCondition.keyword">
             </div>
         </div>
         <div class="row">

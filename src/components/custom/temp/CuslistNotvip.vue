@@ -8,6 +8,12 @@
                 {{item.name}} <br>
                 <span>{{item.tag}}</span><span class="green" v-show="item.is_club">财富会</span>
             </router-link>
+
+            <router-link tag="div" class="more on lyui_tap_active" :to="'/capital/'+item.cid" v-if="item.is_club">
+                <div class="img"></div>
+                <p>配置报告</p>
+            </router-link>
+
             <template v-if="item.mobile == ''? false : true">
                 <a class="phone on lyui_tap_active" :href="'tel:'+item.mobile" v-show="androidCall">
                     <div class="img"></div>

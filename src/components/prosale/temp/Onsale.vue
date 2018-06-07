@@ -3,14 +3,17 @@
         <div v-if="saleList.length ? false : true" class="com_noinfo">
             <p><img src="/src/assets/images/no_info.png" alt=""></p>
         </div>
-        <router-link tag="div" class="itembox lyui_tap_active" v-for="(item,index) in saleList" :key="item.product_id" :to="'/prosale/info/' + item.product_id">
+        <router-link tag="div" class="itembox lyui_tap_active" v-for="item in saleList" :key="item.product_id" :to="'/prosale/info/' + item.product_id">
             <div class="sign" v-show="item.status == '募集中' ? false : true">已封闭</div>
             <div class="title">{{item.product_name}}</div>
             <div class="text">{{item.product_point}}</div>
             <div class="progress flex_align">
                 <div class="left">募集进度</div>
                 <div class="center flex_1">
-                    <div class="linebox">
+                    <div class="linebox" v-if="item.collect_percent == '0%'">
+                        <div class="line" :style="'max-width:100%;width:60%;'"></div>
+                    </div>
+                    <div class="linebox" v-else>
                         <div class="line" :style="'max-width:100%;width:' + item.collect_percent"></div>
                     </div>
                 </div>

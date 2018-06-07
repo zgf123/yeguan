@@ -107,13 +107,6 @@
 						imgSrc:'/public/img/home_pic8.png?v-0.1',
 						title:'财富会统计',
 						signShow:false
-					},
-					{
-						link:'/capital',
-						class:'noafter nobefore',
-						imgSrc:'/public/img/home_pic3.png?v-0.1',
-						title:'资产配置',
-						signShow:false
 					}
 				]
 			}

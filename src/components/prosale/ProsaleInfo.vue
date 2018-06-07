@@ -24,9 +24,21 @@
 				</div>
 				<div class="lyui_cell prosale_item">
 					<div class="lyui_cell_bd lyui_cell_primary">基金期限</div>
-					<div class="lyui_cell_ft">{{proInfo.time_limit}}</div>
+					<div class="lyui_cell_ft">{{proInfo.fund_time}}</div>
 				</div>
 				<div class="lyui_cell prosale_item">
+					<div class="lyui_cell_bd lyui_cell_primary">付息周期</div>
+					<div class="lyui_cell_ft">{{proInfo.interest_fxcycle}}</div>
+				</div>
+				<div class="lyui_cell prosale_item" v-if="proInfo.product_point">
+					<div class="lyui_cell_bd lyui_cell_primary">项目亮点</div>
+					<div class="lyui_cell_ft">{{proInfo.product_point}}</div>
+				</div>
+				<div class="lyui_cell prosale_item" v-if="proInfo.product_risk">
+					<div class="lyui_cell_bd lyui_cell_primary">风控</div>
+					<div class="lyui_cell_ft">{{proInfo.product_risk}}</div>
+				</div>
+				<div class="lyui_cell prosale_item" v-if="proInfo.type">
 					<div class="lyui_cell_bd lyui_cell_primary">组织形式</div>
 					<div class="lyui_cell_ft">{{proInfo.type}}</div>
 				</div>
@@ -58,7 +70,7 @@
 		<div class="pub_title">购买信息</div>
 		<div class="detail">
 			<div class="lyui_cells nopseudo">
-				<div class="lyui_cell prosale_item">
+				<div class="lyui_cell prosale_item" v-if="proInfo.collect_range">
 					<div class="lyui_cell_bd lyui_cell_primary">基金规模</div>
 					<div class="lyui_cell_ft">{{proInfo.collect_range}}万</div>
 				</div>

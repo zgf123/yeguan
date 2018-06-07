@@ -1,0 +1,648 @@
+@r:2px;
+.wallet_dialog{
+    position: absolute;
+    top:0;
+    left:0;
+    right: 0;
+    bottom:0;
+    overflow: hidden;
+    .mask{
+        position: absolute;
+        top:0;
+        left:0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.45);
+    }
+    .table{
+        position: relative;
+        display: table;
+        width: 100%;
+        height: 100%;
+        .td{
+            display: table-cell;
+            vertical-align: middle;
+            .container{
+                width: 80%;
+                margin: 0 auto;
+                border-radius: 8/@r;
+                overflow: hidden;
+            }
+        }
+    }
+    .comfirm{
+        background-color: #fff;
+        padding:0 30/@r;
+        .text{
+            padding: 66/@r 0;
+            font-size: 36/@r;
+            color: #333;
+            text-align: center;
+        }
+        .btns{
+            font-size: 36/@r;
+            text-align: center;
+            line-height: 88/@r;
+            color: #d66433;
+        }
+    }
+    .listcon{
+        font-size: 32/@r;
+        color: #333;
+        background-color: #fff;
+        .title{
+            position: relative;
+            line-height: 88/@r;
+            text-align: center;
+            .close{
+                width: 88/@r;
+                height: 88/@r;
+                background: url(/public/img/wallet/close.png) no-repeat center center;
+                background-size: 40/@r;
+                position: absolute;
+                top:0;
+                right:0;
+            }
+            &::after{
+                content: "";
+                position: absolute;
+                left: 0;
+                width: 100%;
+                height: 1px;
+                bottom: 0;
+                border-bottom: 1px solid #ffa27a;
+                -webkit-transform-origin: 0 100%;
+                transform-origin: 0 100%;
+                -webkit-transform: scaleY(.5);
+                transform: scaleY(.5);
+            }
+        }
+        ul{
+            padding: 0 30/@r;
+            max-height: 660/@r;
+            overflow: auto;
+            li{
+                padding: 22/@r;
+                .left{
+                    padding-right:22/@r;
+                }
+                img{
+                    width: 46/@r;
+                }
+                .right{
+                    width: 46/@r;
+                    height: 46/@r;
+                    &.on{
+                        background: url(/public/img/wallet/duihao.png) center center no-repeat;
+                        background-size: 46/@r;
+                    }
+                }
+            }
+        }
+        .add_bank{
+            padding: 22/@r 22/@r 22/@r 30/@r;
+            .left{
+                padding: 0 22/@r;
+            }
+            img{
+                width: 46/@r;
+            }
+        }
+    }
+}
+.page_wallet{
+    background-color: #f2f2f2;
+    position: absolute;
+    width:100%;
+    height: 100%;
+    top:0;
+    left:0;
+    .c_999{
+        color: #999 !important;
+    }
+    .c_light_red{
+        color: #fc3935 !important;
+    }
+    .wallet_header{
+        font-size: 34/@r;
+        line-height: 88/@r;
+        position: fixed;
+        top:0;
+        left:0;
+        width: 100%;
+        background-color: #fff;
+        text-align: center;
+        color: #333333;
+        .back{
+            position: absolute;
+            width: 88/@r;
+            height: 88/@r;
+            top:0;
+            left: 0;
+            background: url(/public/img/wallet/back_black.png) no-repeat center 20/@r;
+            background-size: 44/@r;
+        }
+    }
+    .wallet_block{
+        height: 88/@r;
+    }
+    .body_index{
+        padding-bottom: 100/@r;
+        .banner{
+            background: url(/public/img/wallet/wallet_banner.png) no-repeat center 0;
+            background-size: 100%;
+            color: #fff;
+            text-align: center;
+            .header{
+                font-size: 34/@r;
+                line-height: 88/@r;
+                position: relative;
+                .back{
+                    position: absolute;
+                    width: 88/@r;
+                    height: 88/@r;
+                    top:0;
+                    left: 0;
+                    background: url(/public/img/wallet/back.png) no-repeat 20/@r 20/@r;
+                    background-size: 44/@r;
+                }
+            }
+            .content{
+                .title{
+                    font-size: 28/@r;
+                    margin-top: 68/@r;
+                }
+                h1{
+                    font-size: 100/@r;
+                    font-weight: bolder;
+                    font-family: PingFangSC-Semibold, sans-serif;
+                    margin-top:40/@r;
+                }
+                .box{
+                    margin-top: 98/@r;
+                    padding:0 82/@r 246/@r;
+                    h2{
+                        font-weight: normal;
+                        font-size: 44/@r;
+                        .b{
+                            font-weight: bolder;
+                            font-size: 52/@r;
+                        }
+                    }
+                    p{
+                        font-size: 26/@r;
+                        margin-top:10/@r;
+                    }
+                }
+            }
+        }
+        .itembox{
+            background-color: #fff;
+            border-top-left-radius: 20/@r;
+            border-top-right-radius: 20/@r;
+            overflow: hidden;
+            margin-top: -20/@r;
+            box-shadow: 0 -6/@r 20/@r rgba(88, 88, 88, 0.1);
+            ul{
+                li{
+                    height: 174/@r;
+                    font-size: 32/@r;
+                    color: #000;
+                    position: relative;
+                    box-shadow: 0 -6/@r 20/@r rgba(88, 88, 88, 0.1);
+                    .left{
+                        padding-left: 30/@r;
+                        img{
+                            width: 104/@r;
+                        }
+                    }
+                    .center{
+                        padding-left:20/@r;
+                    }
+                    .right{
+                        padding-right: 30/@r;
+                        .img{
+                            width: 48/@r;
+                            height: 48/@r;
+                            padding:4/@r;
+                            border-radius: 50%;
+                            overflow: hidden;
+                            box-shadow: 0 0 14/@r rgba(255, 120, 104, .3);
+                            img{
+                                width: 100%;
+                                height: 100%;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .btns{
+            position: fixed;
+            width: 100%;
+            left:0;
+            bottom:0;
+            text-align: center;
+            background-color: #fff;
+            font-size: 32/@r;
+            color: #d66433;
+            line-height: 100/@r;
+            .btn{
+                width: 50%;
+                float: left;
+                &.on{
+                    color: #fff;
+                    background-color: #ffa27a;
+                }
+            }
+        }
+    }
+    .body_account{
+        background-color: #fff;
+        position: absolute;
+        top: 44px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+        .no_info{
+            font-size: 15px;
+            color: #999;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .point{
+            position: absolute;
+            display: block;
+            width: 5px;
+            height: 5px;
+            background-color: #ff4343;
+            border-radius: 50%;
+        }
+        .header_title{
+            position: relative;
+            width: 100%;
+            font-size: 17px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .tabnav{
+            background-color: #fff;
+            position: relative;
+            li{
+                text-align: center;
+                line-height: 50px;
+                font-size: 32/@r;
+                color: #999;
+                span{
+                    position: relative;
+                }
+                &.on span{
+                    color: #d66433;
+                }
+            }
+            .subline{
+                position: absolute;
+                width: 33.3333%;
+                bottom:0;
+                span{
+                    display: block;
+                    width: 70/@r;
+                    height: 2px;
+                    background-color: #d66433;
+                    // -webkit-border-radius: 3px;
+                    // border-radius: 3px;
+                    margin:0 auto;
+                }
+            }
+        }
+        .swiper-container{
+            position: absolute;
+            top: 50px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+        .tabcon{
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            overflow: auto;
+            p{
+                line-height: 90px;
+                border-bottom: 1px solid #ddd;
+            }
+            .item{
+                background-color: #fff;
+                padding: 32/@r 30/@r;
+                color: #333333;
+                .left{
+                    .title{
+                        font-size: 32/@r;
+                    }
+                    .time{
+                        font-size: 26/@r;
+                        color: #999999;
+                        margin-top: 12/@r;
+                    }
+                }
+                .right{
+                    font-size: 34/@r;
+                    &.on{
+                        color: #d66433;
+                    }
+                }
+            }
+        }
+    }
+    .body_blankcard{
+        .add_bank{
+            width: 88/@r;
+            height: 88/@r;
+            position:fixed;
+            top:0;
+            right: 0;
+            background: url(/public/img/wallet/jiahao.png) no-repeat center 20/@r;
+            background-size: 44/@r;
+        }
+        .no_bank_card{
+            padding-top: 104/@r;
+            img{
+                width: 410/@r;
+                margin: 0 auto;
+            }
+            p{
+                padding:0 100/@r;
+                text-align: center;
+                margin-top: 26/@r;
+                color: #333333;
+                font-size: 32/@r;
+            }
+        }
+        .bank_card_box{
+            ul{
+                padding: 20/@r 30/@r;
+                li{
+                    background: -webkit-linear-gradient(35deg, #fdba86, #ff9474);
+                    border-radius: 10/@r;
+                    padding: 40/@r 80/@r;
+                    text-shadow: 4/@r 4/@r 4/@r #e96f4a;
+                    margin-bottom: 20/@r;
+                    h1,h2,p{
+                        font-weight: normal;
+                        font-size: 32/@r;
+                        color: #fff;
+                        line-height: 1.3;
+                    }
+                    h2{
+                        font-size: 26/@r;
+                        margin-top: 10/@r;
+                    }
+                    p{
+                        font-size: 46/@r;
+                        margin-top: 36/@r;
+                        height: 60/@r;
+                        overflow: hidden;
+                        span{
+                            vertical-align: -10/@r;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .body_addcard{
+        .cardinfo{
+            .tips{
+                font-size: 26/@r;
+                color: #999;
+                padding: 26/@r 30/@r;
+                line-height: 1.5;
+            }
+            .form{
+                background-color: #fff;
+                .row{
+                    height: 90/@r;
+                    padding: 0 30/@r;
+                    font-size: 32/@r;
+                    color: #333;
+                    overflow: hidden;
+                    .label{
+                        width: 140/@r;
+                    }
+                    input{
+                        background-color: transparent;
+                        width: 100%;
+                        font-size: 32/@r;
+                        color: #333;
+                        height: 90/@r;
+                    }
+                }
+                &.on .row .label{
+                    color: #999;
+                }
+            }
+            .message{
+                color: #999;
+                font-size: 26/@r;
+                padding: 0 30/@r;
+                line-height: 1.6;
+                margin-top: 22/@r;
+                img{
+                    display: inline-block;
+                    width: 34/@r;
+                    margin-right: 16/@r;
+                    vertical-align: middle;
+                    margin-top: -6/@r;
+                }
+            }
+            .btnbox{
+                padding: 0 30/@r;
+                margin-top: 76/@r;
+                .btn{
+                    font-size: 34/@r;
+                    color: #fff;
+                    height: 90/@r;
+                    line-height: 90/@r;
+                    text-align: center;
+                    background-color: #ffa27a;
+                    border-radius: 8/@r;
+                }
+            }
+        }
+    }
+    .body_fab{
+        .questionbox{
+            border-top: 1px solid #ddd;
+            ul{
+                background-color: #fff;
+                li{
+                    padding:0 30/@r;
+                    height: 90/@r;
+                    img{
+                        width: 30/@r;
+                    }
+                }
+            }
+        }
+        .answerbox{
+            border-top: 1px solid #ddd;
+            background-color: #fff;
+            padding:30/@r;
+            .title{
+                color: #333333;
+                font-size: 32/@r;
+                line-height: 1.6;
+                padding: 0 0 22/@r;
+            }
+            .content{
+                font-size: 26/@r;
+                color: #666666;
+                line-height: 1.8;
+                padding: 24/@r 0 10/@r;
+            }
+        }
+    }
+    .body_cunqu{
+        .com_btn{
+            margin-top: 40/@r;
+            .btn{
+                color: #fff;
+                background-color: #ffa27a;
+                font-size: 34/@r;
+                text-align: center;
+                border-radius: 8/@r;
+                line-height: 92/@r;
+                height: 90/@r;
+                &.off{
+                    background-color: #f8c0a8;
+                }
+            }
+        }
+        .content{
+            padding:20/@r 30/@r;
+            .card{
+                background-color: #fff;
+                padding: 0 30/@r;
+                border-radius: 12/@r;
+                .top{
+                    .right{
+                        text-align: right;
+                        padding: 40/@r 50/@r 40/@r 20/@r;
+                        background: url(/public/img/wallet/arrow.png) no-repeat right center;
+                        background-size: 44/@r;
+                    }
+                }
+                .middle{
+                    color: #333;
+                    padding-bottom: 50/@r;
+                    .title{
+                        font-size: 32/@r;
+                        padding: 36/@r 0;
+                    }
+                    .row{
+                        font-size: 72/@r;
+                        .ipt{
+                            input{
+                                height: 76/@r;
+                                display: block;
+                                width: 100%;
+                                padding-left:10/@r;
+                                color: #333;
+                                font-size: 56/@r;
+                            }
+                        }
+                    }
+                }
+                .bottom{
+                    line-height: 1.6;
+                    color: #999;
+                    font-size: 26/@r;
+                    padding: 36/@r 0;
+                }
+            }
+            .notice{
+                font-size: 26/@r;
+                padding:30/@r 30/@r 20/@r;
+            }
+        }
+        .result{
+            position: absolute;
+            left: 0;
+            top: 88/@r;
+            bottom:0;
+            right: 0;
+            background-color: #fff;
+            border-top: 1px solid #ddd;
+            padding: 0 30/@r;
+            .success{
+                padding: 66/@r 0 80/@r;
+                img{
+                    margin:0 auto;
+                    width: 170/@r;
+                }
+                p{
+                    margin-top: 36/@r;
+                    text-align: center;
+                    color: #d66433;
+                }
+                .msg{
+                    font-size: 26/@r;
+                    color: #999999;
+                    text-align: center;
+                    margin-top: 20/@r;
+                }
+            }
+            .info{
+                padding: 20/@r 30/@r 0;
+                .list{
+                    height: 90/@r;
+                    font-size: 32/@r;
+                    color: #333;
+                    .left{
+                        color: #999;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+
+// 动画效果
+.wallet_bounce-enter-active {
+    animation: wallet_bounce_in .2s ease-in;
+}
+.wallet_bounce-leave-active {
+    animation: wallet_bounce_in .2s reverse;
+}
+@keyframes wallet_bounce_in {
+    0% {
+        opacity: 0;
+        transform: scale(.3);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.wallet_fade-enter-active {
+    animation: wallet_fade_in .1s;
+}
+.wallet_fade-leave-active {
+    animation: wallet_fade_in .1s reverse;
+}
+@keyframes wallet_fade_in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

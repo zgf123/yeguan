@@ -67,11 +67,18 @@
         methods:{
             fetchData(){
                 let _this = this;
+                let id = _this.$route.params.id;
+                if( isNaN(id) ){
+                    var url = '/asset/template';
+                }else{
+                    var url = '/asset/detail';
+                }
+                
 				var data = this.qs.stringify({
                     token:localStorage.token,
                     asset_id:_this.$route.params.id
-				});
-                this.axios.post('/asset/detail',data).then(function(res){
+                });
+                this.axios.post(url, data).then(function(res){
                     if(res.data.code == 1){
                         _this.resdata = res.data.data;
                         _this.resdata.products.stock = res.data.data.products.stock || [];

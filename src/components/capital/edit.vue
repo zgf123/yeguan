@@ -1,66 +1,67 @@
 <template>
     <div>
         <component :is="'Header'">
-            <div slot="title" class="com_title text_o">{{isAdd?'添加资产配置报告':'编辑资产配置报告'}}</div>
-            <div class="zengjia" slot="search" @click="addProduct">添加产品</div>
+            <div slot="title" class="com_title text_o">{{isEdit?'编辑资产配置报告':'添加资产配置报告'}}</div>
         </component>
-        <div class="container Page">
+        <div class="container Page" v-if="resdata">
             <ul class="product cr">
                 <li class="flex flex_align">
-                    <div style="text-indent:1em;">标题：</div>
-                    <div class="flex_1"><input type="text" placeholder="请输入配置报告标题" v-model="resdata.title"></div>
-                </li>
-                <li class="flex flex_align">
                     <div>股权类：</div>
-                    <div class="flex_1 ipt"><input type="tel" placeholder="请输入配置比例" maxlength="3" v-model="resdata.stock_fund_percent">&nbsp;%</div>
+                    <div class="flex_1 ipt"><input type="tel" placeholder="请输入配置比例" maxlength="3" v-model="resdata.stock.percent">&nbsp;%</div>
                 </li>
                 <li class="flex flex_align">
                     <div>固收类：</div>
-                    <div class="flex_1 ipt"><input type="tel" placeholder="请输入配置比例" maxlength="3" v-model="resdata.fixed_fund_percent">&nbsp;%</div>
+                    <div class="flex_1 ipt"><input type="tel" placeholder="请输入配置比例" maxlength="3" v-model="resdata.fixed.percent">&nbsp;%</div>
                 </li>
                 <li class="flex flex_align">
                     <div>保险类：</div>
-                    <div class="flex_1 ipt"><input type="tel" placeholder="请输入配置比例" maxlength="3" v-model="resdata.insurance_fund_percent">&nbsp;%</div>
+                    <div class="flex_1 ipt"><input type="tel" placeholder="请输入配置比例" maxlength="3" v-model="resdata.insurance.percent">&nbsp;%</div>
+                </li>
+                <li class="suggest">
+                    <div class="title">投资建议：</div>
+                    <div class="text">
+                        <textarea v-model="resdata.suggest" placeholder="请输入投资建议"></textarea>
+                    </div>
                 </li>
             </ul>
             <div class="confdetail">
                 <h1><span>资产配置详情</span></h1>
-                <p class="noinfo" v-if="!resdata.products.stock.length && !resdata.products.fixed.length && !resdata.products.insurance.length">暂无资产配置详情</p>
-                <div class="item" v-if="resdata.products.stock.length || 0">
+                <p class="noinfo">暂无资产配置详情</p>
+                <div class="item">
                     <h2>股权类产品：</h2>
                     <ul>
-                        <li v-for="(item,index) in resdata.products.stock" :key="index">
-                            <h3>{{item.product_name}}</h3>
-                            <p>{{item.suggest}}</p>
+                        <li>
+                            <h3>标题</h3>
+                            <p>文字文字</p>
                             <div class="btns cr">
-                                <div class="btn" @click="deleteProduct(item.id)">删除</div>
-                                <router-link class="btn" :to="'/capital/addproduct/'+params_id+'?product_id='+item.id">重新编辑</router-link>
+                                <div class="btn">删除</div>
+                                <router-link class="btn" :to="''">重新编辑</router-link>
                             </div>
                         </li>
                     </ul>
                 </div>
-                <div class="item" v-if="resdata.products.fixed.length || 0">
+                <div class="item">
                     <h2>固收类产品：</h2>
                     <ul>
-                        <li v-for="(item,index) in resdata.products.fixed" :key="index">
-                            <h3>{{item.product_name}}</h3>
-                            <p>{{item.suggest}}</p>
+                        <li>
+                            <h3>标题</h3>
+                            <p>文字文字</p>
                             <div class="btns cr">
-                                <div class="btn" @click="deleteProduct(item.id)">删除</div>
-                                <router-link class="btn" :to="'/capital/addproduct/'+params_id+'?product_id='+item.id">重新编辑</router-link>
+                                <div class="btn">删除</div>
+                                <router-link class="btn" :to="''">重新编辑</router-link>
                             </div>
                         </li>
                     </ul>
                 </div>
-                <div class="item" v-if="resdata.products.insurance.length || 0">
+                <div class="item">
                     <h2>保险类产品：</h2>
                     <ul>
-                        <li v-for="(item,index) in resdata.products.insurance" :key="index">
-                            <h3>{{item.product_name}}</h3>
-                            <p>{{item.suggest}}</p>
+                        <li>
+                            <h3>标题</h3>
+                            <p>文字文字</p>
                             <div class="btns cr">
-                                <div class="btn" @click="deleteProduct(item.id)">删除</div>
-                                <router-link class="btn" :to="'/capital/addproduct/'+params_id+'?product_id='+item.id">重新编辑</router-link>
+                                <div class="btn">删除</div>
+                                <router-link class="btn" :to="''">重新编辑</router-link>
                             </div>
                         </li>
                     </ul>
@@ -68,8 +69,11 @@
             </div>
         </div>
         <div class="savebtn cr">
-            <div class="btn save" @click="saveAll()">保存</div>
-            <div class="btn send" @click="sendClient()">完成，选择发送客户</div>
+            <div class="btn save" style="width:80%;float:none;margin:0 auto;">保存</div>
+        </div>
+        <div class="savebtn cr">
+            <div class="btn save">保存</div>
+            <div class="btn send">完成，选择发送客户</div>
         </div>
     </div>
 </template>
@@ -79,97 +83,38 @@
         name:'rules',
         data(){
             return {
-                isAdd:false,
-                params_id:'',
-                resdata:{
-                    title:'',
-                    stock_fund_percent:'',
-                    fixed_fund_percent:'',
-                    insurance_fund_percent:'',
-                    products:{
-                        stock:[],
-                        insurance:[],
-                        fixed:[]
-                    }
+                resdata:''
+            }
+        },
+        computed:{
+            isEdit(){
+                if( this.$route.path.indexOf('/add') == -1 ){
+                    return true;;
+                }else{
+                    return false;
                 }
             }
         },
         mounted(){
-            this.params_id = this.$route.params.id || '';
-            if( this.$route.params.id===undefined ){
-                this.isAdd = true;
-            }else{
-                this.isAdd = false;
-                this.fetchData();
-            }
+            this.fetchData();
         },
         methods:{
             fetchData(){
                 let _this = this;
 				var data = this.qs.stringify({
                     token:localStorage.token,
-                    asset_id:_this.$route.params.id
+                    customer_id: _this.$route.params.id
 				});
-                this.axios.post('/asset/detail',data).then(function(res){
+                this.axios.post('/asset/create', data).then(function(res){
                     if(res.data.code == 1){
                         _this.resdata = res.data.data;
-                        _this.resdata.products.stock = res.data.data.products.stock || [];
-                        _this.resdata.products.insurance = res.data.data.products.insurance || [];
-                        _this.resdata.products.fixed = res.data.data.products.fixed || [];
                     }else{
                         _this.$store.commit('msg','请求错误，请重试');
                     }
                 });
             },
             addProduct(indexPath){
-                let _this = this;
-                var url='';
-                var data = $.extend({},this.resdata);
-                if(this.isAdd){
-                    url = '/asset/add';
-                }else{
-                    url = '/asset/save';
-                    data.asset_id = data.id;
-                }
-
-                delete data.products;
-                //验证
-                var total = Number(data.stock_fund_percent) + Number(data.fixed_fund_percent) + Number(data.insurance_fund_percent);
-                if(data.title == ''){
-                    this.$store.commit('msg', '请输入配置报告标题');
-                    return false;
-                }else if(total>100){
-                    this.$store.commit('msg', '配置比例总和不能大于100%');
-                    return false;
-                }else if(total<100){
-                    this.$store.commit('msg', '配置比例总和不能小于100%');
-                    return false;
-                }
-                data.token = localStorage.token;
-                data = this.qs.stringify(data);
-
-                this.axios.post(url,data).then(function(res){
-                    if(res.data.code == 1){
-                        if(_this.isAdd){
-                            var params = res.data.data;
-                        }else{
-                            var params = _this.$route.params.id;
-                        }
-                        //跳转到其他页
-                        if(indexPath == 'index'){
-                            var toPath = '/capital'
-                        }else if(indexPath == 'client'){
-                            var toPath = '/capital/client/'+params
-                        }else{
-                            var toPath = '/capital/addproduct/'+params
-                        }
-                        _this.$router.push({
-                            path:toPath
-                        });
-                    }else{
-                        _this.$store.commit('msg','请求错误，请重试');
-                    }
-                });
+                
             },
             //删除产品
             deleteProduct(product_id){
@@ -195,17 +140,6 @@
                         });
                     }
                 });
-            },
-            saveAll(){
-                this.addProduct('index');
-            },
-            sendClient(){
-                let data = this.resdata.products;
-                if(data.stock.length==0 && data.insurance.length==0 && data.fixed.length==0){
-                    this.$store.commit('msg', '请先添加资产配置');
-                    return false;
-                }
-                this.addProduct('client');
             }
         }
     }
@@ -252,6 +186,20 @@
                 width: 120px;
                 input{
                     width: 140px;
+                }
+            }
+        }
+        .suggest{
+            .text{
+                padding-bottom: 16px;
+                textarea{
+                    width: 100%;
+                    height: 110px;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                    padding: 10px;
+                    font-size: 15px;
+                    color: #666;
                 }
             }
         }

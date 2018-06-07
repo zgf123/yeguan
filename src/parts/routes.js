@@ -27,12 +27,11 @@ import ShareBrowse from '../components/statis/ShareBrowse.vue'
 import ShareBrowseDetail from '../components/statis/ShareBrowseDetail.vue'
 import Evaluate from '../components/statis/Evaluate.vue'
 
-import CapitalConfIndex from '../components/CapitalConf/index.vue'
-import CapitalConfShow from '../components/CapitalConf/show.vue'
-import CapitalConfEdit from '../components/CapitalConf/edit.vue'
-import CapitalConfSendhistory from '../components/CapitalConf/sendhistory.vue'
-import CapitalConfClient from '../components/CapitalConf/client.vue'
-import CapitalConfAddproduct from '../components/CapitalConf/addproduct.vue'
+//资产配置
+import Capital from './routesCapital.js'
+
+//我的钱包
+import Wallet from './routesWallet.js'
 
 
 export default [
@@ -92,6 +91,7 @@ export default [
         component: Custom,
         meta: {
             pageTitle: '',
+            backUrl: '/home',
             requiresAuth: true
         },
         children:[
@@ -115,7 +115,6 @@ export default [
                 path: 'edit/:id',
                 component: CustomEdit,
                 meta: {
-                    backUrl: '/custom/detail',
                     pageTitle: '客户编辑'
                 }
             },
@@ -250,7 +249,6 @@ export default [
         path: '/sharebrowsedetail',
         component: ShareBrowseDetail,
         meta: {
-            backUrl: '/sharebrowse',
             pageTitle: '',
             requiresAuth: true
         }
@@ -264,60 +262,8 @@ export default [
             requiresAuth: true
         }
     },
-    {
-        path: '/capital',
-        component: CapitalConfIndex,
-        meta: {
-            backUrl: '/home',
-            pageTitle: '资产配置',
-            requiresAuth: true
-        }
-    },
-    {
-        path: '/capital/show/:id',
-        component: CapitalConfShow,
-        meta: {
-            backUrl: '/capital',
-            pageTitle: '',
-            requiresAuth: true
-        }
-    },
-    {
-        path: '/capital/edit/:id?',
-        component: CapitalConfEdit,
-        meta: {
-            backUrl: '/capital',
-            pageTitle: '添加资产配置报告',
-            requiresAuth: true
-        }
-    },
-    {
-        path: '/capital/client/:id',
-        component: CapitalConfClient,
-        meta: {
-            backUrl: '/capital',
-            pageTitle: '',
-            requiresAuth: true
-        }
-    },
-    {
-        path: '/capital/sendhistory/:id',
-        component: CapitalConfSendhistory,
-        meta: {
-            backUrl: '/capital',
-            pageTitle: '发送记录',
-            requiresAuth: true
-        }
-    },
-    {
-        path: '/capital/addproduct/:id',
-        component: CapitalConfAddproduct,
-        meta: {
-            backUrl: '/capital',
-            pageTitle: '添加产品',
-            requiresAuth: true
-        }
-    },
+    Capital,
+    Wallet,
     {
         path: '/',
         redirect: '/home'

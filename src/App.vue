@@ -31,20 +31,21 @@
 					window.android.navBack();
 					return false;
 				};
+
 				let backUrl = _this.$route.meta.backUrl;
-				if( backUrl == '/custom/detail' || backUrl == '/sharebrowse'){
-					_this.$router.go(-1);
-				}else if(backUrl == '/custom/list'){
+				if(backUrl == '/custom/list'){
 					_this.$router.push({
 						path: backUrl,
 						query:{
 							is_vip:_this.$route.query.is_vip
 						}
 					})
+				}else if( !backUrl ){
+					_this.$router.go(-1);
 				}else{
 					_this.$router.push({
 						path: backUrl
-					})
+					});
 				}
 			};
 		},

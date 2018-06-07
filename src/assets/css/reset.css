@@ -155,6 +155,23 @@ b{
 	transform: scaleY(.5)
 }
 
+.bor_l{
+	position: relative;
+}
+.bor_l:before {
+	content: "";
+	position: absolute;
+	background-color: #d9d9d9;
+	left: 0;
+	top: 0;
+	width: 1px;
+	height: 100%;
+	-webkit-transform-origin: 100% 0;
+	transform-origin: 100% 0;
+	-webkit-transform: scaleX(.5);
+	transform: scaleX(.5);
+}
+
 .cr:after {
 	content: '';
 	display: block;
