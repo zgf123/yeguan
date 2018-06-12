@@ -15,8 +15,12 @@
 					<div class="lyui_cell_ft">{{proInfo.fund_name}}</div>
 				</div>
 				<div class="lyui_cell prosale_item">
-					<div class="lyui_cell_bd lyui_cell_primary">基金管理人</div>
+					<div class="lyui_cell_bd lyui_cell_primary">产品经理</div>
 					<div class="lyui_cell_ft">{{proInfo.manager}}</div>
+				</div>
+				<div class="lyui_cell prosale_item" v-if="proInfo.administrator">
+					<div class="lyui_cell_bd lyui_cell_primary">基金管理人</div>
+					<div class="lyui_cell_ft">{{proInfo.administrator}}</div>
 				</div>
 				<div class="lyui_cell prosale_item">
 					<div class="lyui_cell_bd lyui_cell_primary">投资方向</div>

@@ -14,10 +14,10 @@
                         <div class="line" :style="'max-width:100%;width:60%;'"></div>
                     </div>
                     <div class="linebox" v-else>
-                        <div class="line" :style="'max-width:100%;width:' + item.collect_percent"></div>
+                        <div class="line" :style="'max-width:100%;width:' + (item.collect_percent == '600%' ? '60%' : item.collect_percent)"></div>
                     </div>
                 </div>
-                <div class="right">{{item.collect_percent}}</div>
+                <div class="right">{{item.collect_percent == '600%' ? '募集中' : item.collect_percent}}</div>
             </div>
         </router-link>
     </div>

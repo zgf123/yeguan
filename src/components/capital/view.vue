@@ -3,6 +3,7 @@
 </template>
 <script>
 export default {
+    name:'capital',
     data(){
         return {
             
@@ -14,7 +15,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-    .btn{
+    .aaaaaaaaaaaaa{
         &.delete{
             background-color: #FF6A6A;
         }

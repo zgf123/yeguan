@@ -29,8 +29,8 @@
 					
 					<div class="pro_col_con cr">
 						<div class="left">
-							<p class="text_o"><span>项目名称</span>{{item.product_name}}</p>
-							<p class="term text_o"><span>投资周期</span>{{item.huiqian_start_time}}-{{item.huiqian_end_time}}</p>
+							<p class="text_o">{{item.product_name}}</p>
+							<p class="term text_o">{{item.huiqian_start_time}}-{{item.huiqian_end_time}}</p>
 						</div>
 						<div class="right">
 							<div class="right_con cr">

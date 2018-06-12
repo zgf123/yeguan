@@ -1,58 +1,36 @@
 <template>
     <div>
         <component :is="'Header'">
-            <router-link slot="search" tag="div" class="zengjia" :to="'/capital/'+$route.params.id+'/add'" v-if="resdata.is_buy">
+            <!-- <router-link slot="search" tag="div" class="zengjia" :to="'/capital/'+$route.params.id+'/addbuy'" v-if="Number(is_buy)">
                 <img src="/public/img/jiahao.png">
             </router-link>
             <router-link slot="search" tag="div" class="zengjia" :to="'/capital/'+$route.params.id+'/template'" v-else>
                 <img src="/public/img/jiahao.png">
-            </router-link>
+            </router-link> -->
         </component>
         <div class="container Page">
             <p class="noinfo" v-if="!resdata.length">暂无配置列表</p>
             <div class="item_box">
-                <div class="item bor_b">
+                <router-link tag='div' :to="'/capital/'+$route.params.id+( Number(is_buy) ? '/detailbuy/' : '/detail/')+item.id" class="item bor_b" v-for="(item,index) in resdata" :key="index">
                     <div class="title flex_align">
-                        <div class="flex_1 text_o">资产配置报告资产配置报告资产配置报告资产配置报告资产配置报告</div>
+                        <div class="flex_1 text_o">{{item.title}}</div>
                         <div class="caozuo">
-                            <span class="edit"></span>
-                            <span class="delete"></span>
+                            <router-link :to="'/capital/'+$route.params.id+'/editbuy/'+item.id" tag="span" class="edit" v-if="Number(is_buy)"></router-link>
+                            <router-link :to="'/capital/'+$route.params.id+'/edit/'+item.id" tag="span" class="edit" v-else></router-link>
+                            <span class="delete" @click.prevent="deleteConf(item.id)"></span>
                         </div>
                     </div>
                     <div class="time">
-                        2018/05/02
-                        <span class="send">已发送</span>
-                        <span class="no_send">未发送</span>
+                        {{item.created_at}}
+                        <span class="send" v-if="Number(item.status)">已发送</span>
+                        <span class="no_send" v-else>未发送</span>
                     </div>
-                </div>
-                <div class="item bor_b">
-                    <div class="title flex_align">
-                        <div class="flex_1 text_o">资产配置报告资产配置报告资产配置报告资产配置报告资产配置报告</div>
-                        <div class="caozuo">
-                            <span class="edit"></span>
-                            <span class="delete"></span>
-                        </div>
-                    </div>
-                    <div class="time">
-                        2018/05/02
-                        <span class="send">已发送</span>
-                        <span class="no_send">未发送</span>
-                    </div>
-                </div>
-                <div class="item bor_b">
-                    <div class="title flex_align">
-                        <div class="flex_1 text_o">资产配置报告资产配置报告资产配置报告资产配置报告资产配置报告</div>
-                        <div class="caozuo">
-                            <span class="edit"></span>
-                            <span class="delete"></span>
-                        </div>
-                    </div>
-                    <div class="time">
-                        2018/05/02
-                        <span class="send">已发送</span>
-                        <span class="no_send">未发送</span>
-                    </div>
-                </div>
+                </router-link>
+            </div>
+
+            <div class="create_conf">
+                <router-link tag="div" class="create_btn" :to="'/capital/'+$route.params.id+'/addbuy'" v-if="Number(is_buy)">创建资产配置报告</router-link>
+                <router-link tag="div" class="create_btn" :to="'/capital/'+$route.params.id+'/template'" v-else>创建资产配置报告</router-link>
             </div>
         </div>
     </div>
@@ -63,7 +41,8 @@
         name:'rules',
         data(){
             return {
-                resdata:[]
+                is_buy:1,
+                resdata:[],
             }
         },
         mounted(){
@@ -78,9 +57,11 @@
 				});
                 this.axios.post('/asset/index',data).then(function(res){
                     if(res.data.code == 1){
-                        // _this.resdata = res.data.data || [];
+                        _this.is_buy = res.data.data.is_buy;
+                        _this.resdata = res.data.data.data || [];
+                        _this.resdata.reverse();
                     }else{
-                        // _this.$store.commit('msg','请求错误，请重试');
+                        _this.$store.commit('msg','请求错误，请重试');
                     }
                 });
             },
@@ -111,7 +92,7 @@
 <style lang="less" scoped>
     .container{
         background-color: #fff;
-        padding-bottom: 40px;
+        padding-bottom: 60px;
     }
     .noinfo{
         text-align: center;
@@ -175,6 +156,22 @@
                     }
                 }
             }
+        }
+    }
+    .create_conf{
+        position: fixed;
+        bottom:0;
+        z-index: 999;
+        padding: 10px 15px;
+        width: 100%;
+        text-align: center;
+        .create_btn{
+            width: 100%;
+            border-radius: 4px;
+            padding: 10px 0;
+            font-size: 14px;
+            background-color: #ffa043;
+            color: #fff;
         }
     }
 </style>

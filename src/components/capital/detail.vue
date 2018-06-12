@@ -1,15 +1,15 @@
 <template>
     <div>
         <component :is="'Header'">
-            <router-link slot="search" tag="div" class="bianji" :to="'/capital/'+$route.params.id+'/add'">
+            <!-- <router-link slot="search" tag="div" class="bianji" :to="'/capital/'+$route.params.id+'/add'">
                 <img src="/public/img/capital_edit_head.png">
-            </router-link>
+            </router-link> -->
         </component>
         <div class="container Page">
             <div class="page_capitalconf">
                   <div class="chart_box">
                         <div class="graph">
-                              <!-- <div id="circleChart" class="circle_chart"></div> -->
+                              <!-- <div class="circle_chart"></div> -->
                               <div class="asset_conf_img"><img src="/public/img/asset_conf.jpg" alt=""></div>
                         </div>
                   </div>
@@ -36,7 +36,7 @@
                   </div>
             </div>
         </div>
-        <div class="savebtn cr">
+        <div class="savebtn cr" v-if="!Number(resdata.status)">
             <div class="btn save" @click="sendCustomer()">发送给客户</div>
         </div>
     </div>
@@ -60,9 +60,9 @@
                 let _this = this;
 				var data = this.qs.stringify({
                     token:localStorage.token,
-                    customer_id: _this.$route.params.id
+                    asset_id: _this.$route.params.assetid,
 				});
-                this.axios.post('/asset/create', data).then(function(res){
+                this.axios.post('/asset/detail', data).then(function(res){
                     if(res.data.code == 1){
                         _this.resdata = res.data.data;
                         if(_this.resdata.suggest){   //未进行风险评测不显示投资建议
@@ -111,33 +111,20 @@
                 if(!_this.switch) return false;
                 _this.switch = false;
                 
-				let data = this.qs.stringify({
+				var data = this.qs.stringify({
                     token:localStorage.token,
                     customer_id: _this.$route.params.id,
-                    data:_this.resdata
-                });
-                //先保存创建新配置
-                this.axios.post('/asset/store', data).then(function(res){
+                    asset_id: _this.$route.params.assetid,
+				});
+                this.axios.post('/asset/send', data).then(function(res){
+                    // _this.switch = true;
                     if(res.data.code == 1){
-                        //发送给客户
-                        let dataCus = _this.qs.stringify({
-                            token:localStorage.token,
-                            customer_id: _this.$route.params.id,
-                            asset_id: res.data.data,
-                        });
-                        _this.axios.post('/asset/send', dataCus).then(function(res){
-                            // _this.switch = true;
-                            if(res.data.code == 1){
-                               _this.$store.commit('msg','发送成功！');
-                                setTimeout(() => {
-                                    _this.$router.push({
-                                        path:'/capital/'+_this.$route.params.id
-                                    });
-                                }, 1500);
-                            }else{
-                                _this.$store.commit('msg','请求错误，请重试');
-                            }
-                        });
+                        _this.$store.commit('msg','发送成功！');
+                        setTimeout(() => {
+                            _this.$router.push({
+                                path:'/capital/'+_this.$route.params.id
+                            });
+                        }, 1500);
                     }else{
                         _this.$store.commit('msg','请求错误，请重试');
                     }
