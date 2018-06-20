@@ -12,58 +12,44 @@
         <div class="swiper-container">
             <div class="swiper-wrapper">
                 <div class="swiper-slide">
-                    <div class="tabcon">
-                        <div class="item flex_align bor_b">
-                            <div class="left flex_1">
-                                <div class="title">月度付息</div>
-                                <div class="time">2017-02-30 12:30:20</div>
+                    <div class="tabcon" ref="taball" @scroll="swiperScroll('all')">
+                        <div ref="boxall">
+                            <div class="item flex_align bor_b" v-for="item in resdata.all" :key="item.id">
+                                <div class="left flex_1">
+                                    <div class="title">{{item.msg}}</div>
+                                    <div class="time">{{item.time}}</div>
+                                </div>
+                                <div class="right">{{item.money}}</div>
                             </div>
-                            <div class="right">-5.00</div>
-                        </div>
-                        <div class="item flex_align bor_b">
-                            <div class="left flex_1">
-                                <div class="title">买入</div>
-                                <div class="time">2017-02-30 12:30:20</div>
-                            </div>
-                            <div class="right on">+5.00</div>
-                        </div>
-                        <div class="item flex_align bor_b">
-                            <div class="left flex_1">
-                                <div class="title">提现</div>
-                                <div class="time">2017-02-30 12:30:20</div>
-                            </div>
-                            <div class="right">-5.00</div>
+                            <div class="no_info" style="padding-bottom:10px;font-size:13px;">{{swiper.all.tip}}</div>
                         </div>
                     </div>
                 </div>
                 <div class="swiper-slide">
-                    <div class="tabcon">
-                        <div class="no_info">暂无数据</div>
-                        <div class="item"></div>
+                    <div class="tabcon" ref="tabincome" @scroll="swiperScroll('income')">
+                        <div ref="boxincome">
+                            <div class="item flex_align bor_b" v-for="item in resdata.income" :key="item.id">
+                                <div class="left flex_1">
+                                    <div class="title">{{item.msg}}</div>
+                                    <div class="time">{{item.time}}</div>
+                                </div>
+                                <div class="right">{{item.money}}</div>
+                            </div>
+                            <div class="no_info" style="padding-bottom:10px;font-size:13px;">{{swiper.income.tip}}</div>
+                        </div>
                     </div>
                 </div>
                 <div class="swiper-slide">
-                    <div class="tabcon">
-                        <div class="item flex_align bor_b">
-                            <div class="left flex_1">
-                                <div class="title">月度付息</div>
-                                <div class="time">2017-02-30 12:30:20</div>
+                    <div class="tabcon" ref="tabwithdraw" @scroll="swiperScroll('withdraw')">
+                        <div ref="boxwithdraw">
+                            <div class="item flex_align bor_b" v-for="item in resdata.withdraw" :key="item.id">
+                                <div class="left flex_1">
+                                    <div class="title">{{item.msg}}</div>
+                                    <div class="time">{{item.time}}</div>
+                                </div>
+                                <div class="right">{{item.money}}</div>
                             </div>
-                            <div class="right">-5.00</div>
-                        </div>
-                        <div class="item flex_align bor_b">
-                            <div class="left flex_1">
-                                <div class="title">买入</div>
-                                <div class="time">2017-02-30 12:30:20</div>
-                            </div>
-                            <div class="right on">+5.00</div>
-                        </div>
-                        <div class="item flex_align bor_b">
-                            <div class="left flex_1">
-                                <div class="title">提现</div>
-                                <div class="time">2017-02-30 12:30:20</div>
-                            </div>
-                            <div class="right">-5.00</div>
+                             <div class="no_info" style="padding-bottom:10px;font-size:13px;">{{swiper.withdraw.tip}}</div>
                         </div>
                     </div>
                 </div>
@@ -74,27 +60,50 @@
 
 <script>
 	export default{
-		name: 'Alive_browse',
 		data(){
 			return{
                 li_index:0,
                 mySwiper:'', //初始化后的swiper
                 subline_trans:0, //tab下标线移动的距离
                 ani:'transition: all .3s;', //下划线的动画设置
+                resdata:{
+                    all:'',
+                    income:'',
+                    withdraw:'',
+                },
+                swiper:{
+                    all:{
+                        tab:'taball',
+                        box:'boxall',
+                        onoff:true,
+                        page:1,
+                        tip:''
+                    },
+                    income:{
+                        tab:'tabincome',
+                        box:'boxincome',
+                        onoff:true,
+                        page:1,
+                        tip:''
+                    },
+                    withdraw:{
+                        tab:'tabwithdraw',
+                        box:'boxwithdraw',
+                        onoff:true,
+                        page:1,
+                        tip:''
+                    }
+                }
 			}
 		},
         mounted(){
             //获取数据
-            // this.fetchData();
+            this.fetchData();
             
             //初始化swiper
             let _this = this;
             this.mySwiper = this.mySwiperInit();
         },
-        activated(){
-			//获取数据，在这里获取数据避免滑块重置
-            this.fetchData();
-		},
         filters: {
             timeFormat: function (value) {
                 if(value){
@@ -107,16 +116,45 @@
         },
         methods:{
             fetchData(){
-				let _this = this;
-				var data = this.qs.stringify({
-					token:localStorage.token
-				});
-                //产品浏览记录
-                this.axios.post('/club/wechatProductLogs',data).then(function(res){
-                	if(res.data.code==1){
-						this.product_data = res.data.data || '';
-					}
-                }.bind(this));
+                let _this = this;
+                _this.swiper.all.tip = '数据加载中...';
+                _this.swiper.income.tip = '数据加载中...';
+                _this.swiper.withdraw.tip = '数据加载中...';
+
+                this.axios.all([
+                    _this.fetchAll(),
+                    _this.fetchIncome(),
+                    _this.fetchWithdraw()
+                ]).then(_this.axios.spread(function(allRes,incomeRes,withdrawRes){
+                    _this.resdata.all = allRes.data.data || [];
+                    _this.resdata.income = incomeRes.data.data || [];
+                    _this.resdata.withdraw = withdrawRes.data.data || [];
+                    
+                    _this.swiper.all.tip = _this.resdata.all.length == 0 ?  '暂无数据' : '数据加载完成';
+                    _this.swiper.income.tip = _this.resdata.income.length == 0 ?  '暂无数据' : '数据加载完成';
+                    _this.swiper.withdraw.tip = _this.resdata.withdraw.length == 0 ?  '暂无数据' : '数据加载完成';
+                }));
+            },
+            fetchAll(){
+                let data = {
+                    token:localStorage.token,
+                    page: this.swiper.all.page
+                };
+                return this.axios.post(this.$store.state.walleturl+'/records/index', this.qs.stringify(data));
+            },
+            fetchIncome(){
+                let data = {
+                    token:localStorage.token,
+                    page: this.swiper.income.page
+                };
+                return this.axios.post(this.$store.state.walleturl+'/records/income', this.qs.stringify(data));
+            },
+            fetchWithdraw(){
+                let data = {
+                    token:localStorage.token,
+                    page: this.swiper.withdraw.page
+                };
+                return this.axios.post(this.$store.state.walleturl+'/records/withdraw', this.qs.stringify(data));
             },
             //初始化swiper
             mySwiperInit(){
@@ -144,6 +182,38 @@
                 let _this = this;
                 this.mySwiper.slideTo(index, 300, false);
                 this.subline_trans = _this.mySwiper.width / _this.mySwiper.slides.length * index;
+            },
+            swiperScroll(params){
+                let _this = this,
+                    box = _this.swiper[params].box,
+                    tab = _this.swiper[params].tab;
+
+                let boxH = this.$refs[box].offsetHeight;
+                let tabH = this.$refs[tab].offsetHeight;
+                let top = this.$refs[tab].scrollTop;
+                if(top>=boxH - tabH){
+                    _this.swiper[params].page++;
+                    if (!this.swiper[params].onoff) return false;
+                    _this.swiper[params].onoff = false;
+                    _this.swiper[params].tip = '数据加载中...';
+                    let method = '';
+                    if(params == 'all'){
+                        method = _this.fetchAll();
+                    }else if(params == 'income'){
+                        method = _this.fetchIncome();
+                    }else if(params == 'withdraw'){
+                        method = _this.fetchWithdraw();
+                    }
+                    method.then(function(res){
+                        _this.resdata[params] = _this.resdata[params].concat(res.data.data);
+                        if(res.data.data.length == 0 || res.data.data.length<15){
+                            _this.swiper[params].tip = '数据已全部加载';
+                        }else{
+                            _this.swiper[params].onoff = true;
+                            _this.swiper[params].tip = '加载完成';
+                        }
+                    });
+                }
             }
         }
 	}

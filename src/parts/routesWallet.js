@@ -29,7 +29,7 @@ export default {
             path: 'account',
             component: Account,
             meta:{
-                title:'余额明细'
+                title:'账单明细'
             }
         },
         {
@@ -49,6 +49,13 @@ export default {
         {
             path: 'question',
             component: Question,
+            meta:{
+                title:'常见问题'
+            }
+        },
+        {
+            path: 'answer/:id',
+            component: Answer,
             meta:{
                 title:'常见问题'
             }

@@ -1,6 +1,7 @@
 <template>
     <div>
         <component :is="'Header'">
+            <div slot="title" class="com_title text_o">{{resdata.customer_real_name}}的资产配置报告</div>
             <router-link slot="search" tag="div" class="bianji" :to="'/capital/'+$route.params.id+'/add'">
                 <img src="/public/img/capital_edit_head.png">
             </router-link>

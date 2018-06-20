@@ -23,6 +23,7 @@ axios.interceptors.request.use(function (config) {  //配置发送请求的信�
 axios.interceptors.response.use(function (response) { //配置请求回来的信息
     if (response.data.status == 505){
         store.commit('toLogin','账号异常，请重新登录');
+        return false;
     }
     return response;
 }, function (error) {

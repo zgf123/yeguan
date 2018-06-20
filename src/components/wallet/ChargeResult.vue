@@ -8,14 +8,14 @@
             <div class="info">
                 <div class="list flex_align">
                     <div class="left flex_1">充值金额</div>
-                    <div class="right">￥1000</div>
+                    <div class="right">￥{{$route.query.money}}</div>
                 </div>
                 <div class="list flex_align">
                     <div class="left flex_1">充值项目</div>
                     <div class="right">周周宝</div>
                 </div>
             </div>
-            <div class="com_btn"><div class="btn">完成</div></div>
+            <router-link tag="div" :to="'/wallet'" class="com_btn"><div class="btn">完成</div></router-link>
         </div>
     </div>
 </template>

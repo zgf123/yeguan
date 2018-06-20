@@ -11,7 +11,7 @@
 
             <router-link tag="div" class="more on lyui_tap_active" :to="'/capital/'+item.cid" v-if="item.is_club">
                 <div class="img"></div>
-                <p>配置报告</p>
+                <p>资产报告</p>
             </router-link>
 
             <template v-if="item.mobile == ''? false : true">

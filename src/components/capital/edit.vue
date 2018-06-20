@@ -1,7 +1,7 @@
 <template>
     <div>
         <component :is="'Header'">
-            <div slot="title" class="com_title text_o">{{isEdit?'编辑资产配置报告':'添加资产配置报告'}}</div>
+            <div slot="title" class="com_title text_o">{{resdata.customer_real_name}}的资产配置报告</div>
             <div slot="search" class="baocuo" v-if="Number(resdata.is_buy)"><span>报错</span></div>
         </component>
         <div class="container Page" v-if="resdata">
@@ -9,6 +9,7 @@
                 <li class="suggest">
                     <div class="title">投资建议：</div>
                     <div class="text">
+                        <div class="textarea">{{resdata.suggest}}</div>
                         <textarea v-model="resdata.suggest" placeholder="请输入投资建议"></textarea>
                     </div>
                 </li>
@@ -329,14 +330,29 @@
         }
         .suggest{
             .text{
-                padding-bottom: 16px;
-                textarea{
+                position: relative;
+                .textarea{
                     width: 100%;
-                    height: 110px;
                     border: 1px solid #ddd;
                     border-radius: 4px;
                     padding: 10px;
                     font-size: 15px;
+                    color: #666;
+                    line-height: 1.4;
+                    min-height: 100px;
+                    overflow: hidden;
+                }
+                textarea{
+                    width: 100%;
+                    height: 100%;
+                    position: absolute;
+                    top:0;
+                    left:0;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                    padding: 10px;
+                    font-size: 15px;
+                    line-height: 1.4;
                     color: #666;
                 }
             }

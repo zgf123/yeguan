@@ -1,21 +1,32 @@
 <template>
     <div class="body_fab">
         <div class="answerbox">
-            <div class="title bor_b">什么是余额</div>
-            <div class="content">
-                会计学中，某一特定时期，某账户中左方金额合计与右方金额合计之差叫做余额。会计学中，某一特定时期，某账户中左方金额合计与右方金额合计之差叫做余额。<br><br>
-                会计学中，某一特定时期，某账户中左方金额合计与右方金额合计之差叫做余额。<br><br>
-                会计学中，某一特定时期，某账户中左方金额合计与右方金额合计之差叫做余额。会计学中，某一特定时期，某账户中左方金额合计与右方金额合计之差叫做余额。会计学中，某一特定时期，某账户中左方金额合计与右方金额合计之差叫做余额。
-            </div>
+            <div class="title bor_b">{{item.title}}</div>
+            <div class="content" v-html="item.con"></div>
         </div>
     </div>
 </template>
 <script>
+import Questions from './questions.js'
 export default {
     data(){
         return{
-            msg:'常见问题'
+            questions:Questions,
+            item:{}
         }
+    },
+    mounted(){
+        let _this = this;
+        this.item = this.questions.map((c,i)=>{
+            if(c.id == _this.$route.params.id){
+                _this.item = c;
+            }
+        });
+        this.questions.forEach(item => {
+            if(item.id == _this.$route.params.id){
+                _this.item = item;
+            }
+        });
     }
 }
 </script>

@@ -9,11 +9,14 @@
                   <div class="topmsg">{{resdata.topInfo}}</div>
                   <div class="chart_box">
                         <div class="graph">
-                              <div id="circleChart" class="circle_chart"></div>
-                              <div class="sub_title">投资周期分析</div>
-                              <div class="cut_off_line"><div class="bor_b"></div></div>
+                              <template v-if="onoff.showCircle">
+                                <div id="circleChart" class="circle_chart"></div>
+                                <div class="sub_title">投资周期分析</div>
+                                <div class="cut_off_line"><div class="bor_b"></div></div>
+                            </template>
                               <div class="products">
                                     <div class="pro_title">在投项目：</div>
+                                    <p v-if="!resdata.zaibao.length" style="font-size:14px;color:#999;text-align:center;line-height:3;">无在投项目</p>
                                     <ul>
                                         <li :class="(index == resdata.zaibao.length-1 && resdata.zaibao.length<=4) ? '' : 'bor_b'" v-for="(item,index) in resdata.zaibao" :key="index">
                                             <h1>{{item.product_name}}</h1>
@@ -86,6 +89,7 @@
                 switch:true,
                 onoff:{
                     showDelete:true, //是否显示产品删除按钮
+                    showCircle:true,
                 },
                 resdata:'', //核心数据
             }
@@ -142,13 +146,15 @@
                 this.axios.post(url, data).then(function(res){
                     if(res.data.code == 1){
                         _this.resdata = res.data.data;
-
+                        _this.resdata.zaibao = res.data.data.zaibao || [];
+                        _this.resdata.timeProportion = res.data.data.timeProportion || [];
+                        
                         //绘制图表
                         setTimeout(() => {
                             _this.drawCircle(
-                                parseInt(_this.resdata.timeProportion.yiniannei*100), 
-                                parseInt(_this.resdata.timeProportion.yizhisan*100), 
-                                parseInt(_this.resdata.timeProportion.sannianyishang*100)
+                                _this.resdata.timeProportion.yiniannei || 0, 
+                                _this.resdata.timeProportion.yizhisan || 0, 
+                                _this.resdata.timeProportion.sannianyishang || 0
                             );
                             _this.drawChart();
                         }, 10);
@@ -194,6 +200,11 @@
             //绘制圆形
             drawCircle(yiniannei,yizhisan,sannianyishang){
                 let _this = this;
+                let total = Number(yiniannei) + Number(yizhisan) + Number(sannianyishang);
+                if(total == 0){
+                    _this.onoff.showCircle = false;
+                    return false;
+                }
                 let oData = [
                         {name: '一年内\n', value: yiniannei},
                         {name: '1-3年\n', value: yizhisan},
@@ -203,9 +214,11 @@
 
                 $.each(oData, function(i,c){
                     if(c.value != 0){
+                        c.value = (c.value/total).toFixed(2)*100;
                         data.push(c);
                     };
                 });
+                data[data.length-1].value = 100 - data.reduce((a,b)=>a+b.value,data[data.length-1].value*-1);
                 
                 var myChart = echarts.init(document.getElementById('circleChart'));
                 var option = {
@@ -216,8 +229,7 @@
                             label: {
                                     formatter: function(obj){
                                         let data = obj.data;
-                                        let total = yiniannei + yizhisan + sannianyishang;
-                                        return data.name + (data.value/total).toFixed(2)*100 + '%';
+                                        return data.name + data.value + '%';
                                     },
                                     fontSize: 12,
                                     lineHeight: 16,
@@ -252,7 +264,7 @@
                 let _this = this;
                 function drawLine(opt){
                     var expectChart = echarts.init(document.getElementById('expect'));
-                    var fenhongColor = '#ff8888', gushouColor = '#c58f57';
+                    var fenhongColor = '#ff1919', gushouColor = '#c58f57';
 
                     var option = {
                             legend: {
@@ -265,14 +277,14 @@
                                 },
                                 data:[
                                     {
-                                        name:'预期分红',
+                                        name:'股权产品',
                                         icon:'rect',
                                         textStyle:{
                                             color:fenhongColor
                                         }
                                     }, 
                                     {
-                                        name:'类固收',
+                                        name:'类固收产品',
                                         icon:'rect',
                                         textStyle:{
                                             color:gushouColor
@@ -335,8 +347,8 @@
                                     }
                             },
                             series : [
-                                    {type:'line', name:'预期分红',itemStyle:{color:fenhongColor}},
-                                    {type:'line', name:'类固收',itemStyle:{color:gushouColor}},
+                                    {type:'line', name:'股权产品',itemStyle:{color:fenhongColor}},
+                                    {type:'line', name:'类固收产品',itemStyle:{color:gushouColor}},
                                     {
                                         type:'line',
                                         symbolSize: 0,

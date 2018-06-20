@@ -56,7 +56,7 @@ export default {
             path: 'template',
             component: CapitalTemplate,
             meta: {
-                pageTitle: '资产配置报告',
+                pageTitle: '创建资产配置报告',
             }
         },
     ]
