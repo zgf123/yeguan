@@ -8,7 +8,10 @@ let store = new Vuex.Store({
     state: {
         // baseurl:'http://manager.yeguan.fminxiang.com', //正式环境
         baseurl:'http://test.manager.yeguan.fminxiang.com', //测试环境
+        // baseurl:'http://manager.fminxiang.local', //本地测试环境
         walleturl: 'http://licai.yeguan.fminxiang.com', //钱包接口
+        // walleturl: 'http://licai.yeguan.local', //本地测试钱包接口
+
         loading: false,
         isFetchData: true,
         pageTitle:'业管系统'

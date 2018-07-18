@@ -1,110 +1,120 @@
 <template>
-    <div>
+    <div class="editContainer">
         <component :is="'Header'">
             <div slot="title" class="com_title text_o">{{resdata.customer_real_name}}的资产配置报告</div>
             <div slot="search" class="baocuo" v-if="Number(resdata.is_buy)"><span @click="sendError()">报错</span></div>
         </component>
-        <div class="container Page" v-if="resdata">
-            <div class="page_capitalconf">
-                  <div class="topmsg">{{resdata.topInfo}}</div>
-                  <div class="chart_box">
-                        <div class="graph">
-                            <template v-if="onoff.showCircle">
-                                <div id="circleChart" class="circle_chart"></div>
-                                <div class="sub_title">投资周期分析</div>
-                                <div class="cut_off_line"><div class="bor_b"></div></div>
-                            </template>
-                              
-                              <div class="products">
-                                    <div class="pro_title">在投项目：</div>
-                                    <p v-if="!resdata.zaibao.length" style="font-size:14px;color:#999;text-align:center;line-height:3;">无在投项目</p>
-                                    <ul>
-                                        <li :class="(index == resdata.zaibao.length-1 && resdata.zaibao.length<=4) ? '' : 'bor_b'" v-for="(item,index) in resdata.zaibao" :key="index">
-                                            <h1>{{item.product_name}}</h1>
-                                            <div class="info flex_align">
-                                                <div class="flex_1 text_l">
-                                                    <div class="top">{{item.huiqian_start_time}}</div>
-                                                    <p>购入时间</p>
+        <div class="Page thiscontent adr_input_box adr_input_show" style="top:0;" :style="'transform:translate3d('+ (isSelectFoundShow-1)*10 +'rem,0,0);'">
+            <div class="container Page" v-if="resdata">
+                <div class="page_capitalconf">
+                    <div class="topmsg">{{resdata.topInfo}}</div>
+                    <div class="chart_box">
+                            <div class="graph">
+                                <template v-if="onoff.showCircle">
+                                    <div id="circleChart" class="circle_chart"></div>
+                                    <div class="sub_title">投资周期分析</div>
+                                    <div class="cut_off_line"><div class="bor_b"></div></div>
+                                </template>
+                                
+                                <div class="products">
+                                        <div class="pro_title">在投项目：</div>
+                                        <p v-if="!resdata.zaibao.length" style="font-size:14px;color:#999;text-align:center;line-height:3;">无在投项目</p>
+                                        <ul>
+                                            <li :class="(index == resdata.zaibao.length-1 && resdata.zaibao.length<=4) ? '' : 'bor_b'" v-for="(item,index) in resdata.zaibao" :key="index">
+                                                <h1>{{item.product_name}}</h1>
+                                                <div class="info flex_align">
+                                                    <div class="flex_1 text_l">
+                                                        <div class="top">{{item.huiqian_start_time}}</div>
+                                                        <p>购入时间</p>
+                                                    </div>
+                                                    <div class="flex_1 text_c">
+                                                        <div class="top">{{(item.huiqian_summoney/10000).toFixed(2) + '万'}}</div>
+                                                        <p>投资金额</p>
+                                                    </div>
+                                                    <div class="flex_1 text_r">
+                                                        <div class="top">{{item.huiqian_end_time}}</div>
+                                                        <p>到期时间</p>
+                                                    </div>
                                                 </div>
-                                                <div class="flex_1 text_c">
-                                                    <div class="top">{{(item.huiqian_summoney/10000).toFixed(2) + '万'}}</div>
-                                                    <p>投资金额</p>
-                                                </div>
-                                                <div class="flex_1 text_r">
-                                                    <div class="top">{{item.huiqian_end_time}}</div>
-                                                    <p>到期时间</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                              </div>
-                              <div class="toggle_slide" v-if="resdata.zaibao.length>4"><span class="text">展开详情</span><span class="slide_arrow"></span></div>
-                              <div style="height:5px;" v-else></div>
-                        </div>
-                  </div>
-                  <div class="income_box">
-                        <div class="item item_expect bor_b">
-                              <h1>未来5年预期收益一览：</h1>
-                              <div class="expect" id="expect"></div>
-                        </div>
-                        <div class="item item_details bor_b">
-                              <h1>未来一年预期收益明细：</h1>
-                              <div class="detailsbox">
-                                    <div class="ul_box">
-                                          <ul class="cr">
-                                                <li v-for="(item,key) in resdata.theNextOneYears" :key="key">
-                                                    <div class="money">{{item | mingxiMoneyFormat}}</div>
-                                                    <div class="time">{{key}}</div>
-                                                </li>
-                                          </ul>
-                                    </div>
-                              </div>
-                        </div>
-                  </div>
-            </div>
-            <ul class="product cr">
-                <li class="suggest">
-                    <div class="title">投资建议：</div>
-                    <div class="text">
-                        <div class="textarea">{{resdata.suggest}}</div>
-                        <textarea v-model="resdata.suggest" placeholder="请输入投资建议"></textarea>
+                                            </li>
+                                        </ul>
+                                </div>
+                                <div class="toggle_slide" v-if="resdata.zaibao.length>4"><span class="text">展开详情</span><span class="slide_arrow"></span></div>
+                                <div style="height:5px;" v-else></div>
+                            </div>
                     </div>
-                </li>
-            </ul>
-            <div class="confdetail">
-                <h1><span>产品推荐</span></h1>
-                <div class="item bor_b" v-for="(item,index) in resdata.products" :key="index">
-                    <div class="title product_name_search">
-                        <input type="text" placeholder="请输入产品标题" v-model="item.product_name" v-on:input ="searchProduct(index)">
-                        <div class="search_result" v-show="productData.length && index==productIndex">
-                            <ul>
-                                <li class="bor_b" v-for="(v,i) in productData" :key="i" @click="selectProduct(index,v.product_name,v.product_point)">{{v.product_name}}</li>
-                            </ul>
-                            <div class="close" @click="productData = []">关闭</div>
+                    <div class="income_box">
+                            <div class="item item_expect bor_b">
+                                <h1>未来5年预期收益一览：</h1>
+                                <div class="expect" id="expect"></div>
+                            </div>
+                            <div class="item item_details bor_b">
+                                <h1>未来一年预期收益明细：</h1>
+                                <div class="detailsbox">
+                                        <div class="ul_box">
+                                            <ul class="cr">
+                                                    <li v-for="(item,key) in resdata.theNextOneYears" :key="key">
+                                                        <div class="money">{{item | mingxiMoneyFormat}}</div>
+                                                        <div class="time">{{key}}</div>
+                                                    </li>
+                                            </ul>
+                                        </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                <ul class="product cr">
+                    <li class="suggest">
+                        <div class="title">投资建议：</div>
+                        <div class="text">
+                            <div class="textarea">{{resdata.suggest}}</div>
+                            <textarea v-model="resdata.suggest" placeholder="请输入投资建议"></textarea>
                         </div>
-                    </div>
-                    <div class="text">
-                        <textarea placeholder="请输入产品描述" v-model="item.suggest"></textarea>
-                    </div>
-                    <div class="btns cr">
-                        <div class="btn fl_l delete" @click="deleteProduct(index)" v-if="onoff.showDelete">删除</div>
-                        <div class="btn fl_r use" v-if="index == resdata.products.length-1" @click="addProduct()">新增</div>
+                    </li>
+                </ul>
+                <div class="confdetail">
+                    <h1><span>产品推荐</span></h1>
+                    <div class="item bor_b" v-for="(item,index) in resdata.products" :key="index">
+                        <div class="title product_name_search">
+                            <div class="show_product_list"><span @click="showSelectFound(index)">选择产品</span></div>
+                            <input type="text" placeholder="请输入产品标题" v-model="item.product_name">
+                            <!-- <input type="text" placeholder="请输入产品标题" v-model="item.product_name" v-on:input ="searchProduct(index)">
+                            <div class="search_result" v-show="productData.length && index==productIndex">
+                                <ul>
+                                    <li class="bor_b" v-for="(v,i) in productData" :key="i" @click="selectProduct(index,v.product_name,v.product_point)">{{v.product_name}}</li>
+                                </ul>
+                                <div class="close" @click="productData = []">关闭</div>
+                            </div> -->
+                        </div>
+                        <div class="text">
+                            <textarea placeholder="请输入产品描述" v-model="item.suggest"></textarea>
+                        </div>
+                        <div class="btns cr">
+                            <div class="btn fl_l delete" @click="deleteProduct(index)" v-if="onoff.showDelete">删除</div>
+                            <div class="btn fl_r use" v-if="index == resdata.products.length-1" @click="addProduct()">新增</div>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="savebtn cr">
+                <div class="btn save" @click="submit()">保存并预览</div>
+            </div>
         </div>
-        <div class="savebtn cr">
-            <div class="btn save" @click="submit()">保存并预览</div>
-        </div>
+
+        <!-- 选择基金项目 -->
+        <component :is="'Products'" @selectProductEmit="selectProductFn" :style="'transform:translate3d('+ (isSelectFoundShow*10) +'rem,0,0);'"></component>
     </div>
 </template>
 
 <script>
+    import Products from './temp/products.vue'
     export default {
         name:'rules',
         data(){
             return {
                 switch:true,
+                isSelectFoundShow:1, //滑动显示隐藏产品列表
+                product_index:0, //正在修改的产品位置
                 onoff:{
                     showDelete:true, //是否显示产品删除按钮
                     showCircle:true,
@@ -122,6 +132,9 @@
                     return false;
                 }
             }
+        },
+        components:{
+            Products
         },
         filters:{
             mingxiTimeFormat(val){
@@ -194,7 +207,7 @@
                 this.btnShow();//显示相关按钮
             },
             //搜索产品
-            searchProduct(index){
+            /* searchProduct(index){   //废弃
                 let _this = this;
                 _this.productIndex = index;
                 var data = {
@@ -208,10 +221,22 @@
                     }
                 });
             },
-            selectProduct(index,product_name,product_point){
+            selectProduct(index,product_name,product_point){   //废弃
                 this.resdata.products[index].product_name = product_name;
                 this.resdata.products[index].suggest = product_point;
                 this.productData = [];
+            }, */
+
+            //产品选择
+            selectProductFn(pro){
+                this.isSelectFoundShow = 1;
+                if(!pro) return false;
+                this.resdata.products[this.product_index].product_name = pro.product_name;
+                this.resdata.products[this.product_index].suggest = pro.product_point;
+            },
+            showSelectFound(index){
+                this.isSelectFoundShow = 0;
+                this.product_index = index;
             },
             //删除产品
             deleteProduct(index){
@@ -286,10 +311,20 @@
                     if(res.data.code == 1){
                         // _this.switch = true;
                         _this.$store.commit('msg','保存成功');
+
+                        var push_asset_id = '';
+                        if(res.data.data){
+                            push_asset_id = res.data.data;
+                            if(res.data.data.length == 0){
+                                push_asset_id = _this.$route.params.assetid;
+                            }
+                        }else{
+                            push_asset_id = _this.$route.params.assetid;
+                        }
                         //页面跳转
                         setTimeout(()=>{
                             _this.$router.push({
-                                path:'/capital/'+_this.$route.params.id+'/detailbuy/'+(res.data.data || _this.$route.params.assetid)
+                                path:'/capital/'+_this.$route.params.id+'/detailbuy/'+push_asset_id
                             });
                         },1500);
                     }else{
@@ -584,6 +619,29 @@
 </script>
 
 <style lang="less" scoped>
+    .editContainer{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        top:0;
+        left:0;
+    }
+    .thiscontent{
+        background-color: #fff;
+        transition: .3s;
+    }
+    .show_product_list{
+        text-align: right;
+        padding-bottom: 10px;
+        span{
+            padding:6px 12px;
+            background-color: #5CACEE;
+            color: #fff;
+            font-size: 14px;
+            border-radius: 3px;
+        }
+    }
     .baocuo{
         position: absolute;
         top:0;

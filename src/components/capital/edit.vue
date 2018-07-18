@@ -1,101 +1,60 @@
 <template>
-    <div>
+    <div class="editContainer">
         <component :is="'Header'">
             <div slot="title" class="com_title text_o">{{resdata.customer_real_name}}的资产配置报告</div>
             <div slot="search" class="baocuo" v-if="Number(resdata.is_buy)"><span>报错</span></div>
         </component>
-        <div class="container Page" v-if="resdata">
-            <ul class="product cr" v-if="suggest_show">
-                <li class="suggest">
-                    <div class="title">投资建议：</div>
-                    <div class="text">
-                        <div class="textarea">{{resdata.suggest}}</div>
-                        <textarea v-model="resdata.suggest" placeholder="请输入投资建议"></textarea>
-                    </div>
-                </li>
-            </ul>
-            <div class="confdetail">
-                <h1><span>产品推荐</span></h1>
-                <div class="item bor_b" v-for="(item,index) in resdata.insurance.products" :key="item.id">
-                    <!-- 搜索 -->
-                    <div class="title product_name_search">
-                        <input type="text" placeholder="请输入产品标题" v-model="item.product_name" v-on:input ="searchProduct('insurance', index)">
-                        <div class="search_result" v-show="productData.length && index==productIndex && productStr=='insurance'">
-                            <ul>
-                                <li class="bor_b" v-for="(v,i) in productData" :key="i" @click="selectProduct('insurance', index,v.product_name,v.product_point)">{{v.product_name}}</li>
-                            </ul>
-                            <div class="close" @click="productData = []">关闭</div>
+        <div class="Page thiscontent adr_input_box adr_input_show" style="top:0;" :style="'transform:translate3d('+ (isSelectFoundShow-1)*10 +'rem,0,0);'">
+            <div class="container Page" v-if="resdata">
+                <ul class="product cr" v-if="suggest_show">
+                    <li class="suggest">
+                        <div class="title">投资建议：</div>
+                        <div class="text">
+                            <div class="textarea">{{resdata.suggest}}</div>
+                            <textarea v-model="resdata.suggest" placeholder="请输入投资建议"></textarea>
                         </div>
-                    </div>
-
-                    <div class="text">
-                        <textarea placeholder="请输入产品描述" v-model="item.suggest"></textarea>
-                    </div>
-                    <div class="btns cr">
-                        <div class="btn fl_l delete" @click="deleteProduct('insurance',index)" v-if="onoff.showDelete">删除</div>
-                        <div class="btn fl_r use" v-if="onoff.showAddClass == 'insurance' && index == resdata.insurance.products.length-1" @click="addProduct()">新增</div>
-                    </div>
-                </div>
-
-                <div class="item bor_b" v-for="(item,index) in resdata.fixed.products" :key="item.id">
-                    <!-- 搜索 -->
-                    <div class="title product_name_search">
-                        <input type="text" placeholder="请输入产品标题" v-model="item.product_name" v-on:input ="searchProduct('fixed', index)">
-                        <div class="search_result" v-show="productData.length && index==productIndex && productStr=='fixed'">
-                            <ul>
-                                <li class="bor_b" v-for="(v,i) in productData" :key="i" @click="selectProduct('fixed', index,v.product_name,v.product_point)">{{v.product_name}}</li>
-                            </ul>
-                            <div class="close" @click="productData = []">关闭</div>
+                    </li>
+                </ul>
+                <div class="confdetail">
+                    <h1><span>产品推荐</span></h1>
+                    <div class="item bor_b" v-for="(item,index) in resdata.products" :key="item.id">
+                        <div class="title product_name_search">
+                            <div class="show_product_list"><span @click="showSelectFound(index)">选择产品</span></div>
+                            <input type="text" placeholder="请输入产品标题" v-model="item.product_name">
                         </div>
-                    </div>
-                    
-                    <div class="text">
-                        <textarea placeholder="请输入产品描述" v-model="item.suggest"></textarea>
-                    </div>
-                    <div class="btns cr">
-                        <div class="btn fl_l delete" @click="deleteProduct('fixed',index)" v-if="onoff.showDelete">删除</div>
-                        <div class="btn fl_r use" v-if="onoff.showAddClass == 'fixed' && index == resdata.fixed.products.length-1" @click="addProduct()">新增</div>
-                    </div>
-                </div>
 
-                <div class="item bor_b" v-for="(item,index) in resdata.stock.products" :key="item.id">
-                    <!-- 搜索 -->
-                    <div class="title product_name_search">
-                        <input type="text" placeholder="请输入产品标题" v-model="item.product_name" v-on:input ="searchProduct('stock', index)">
-                        <div class="search_result" v-show="productData.length && index==productIndex && productStr=='stock'">
-                            <ul>
-                                <li class="bor_b" v-for="(v,i) in productData" :key="i" @click="selectProduct('stock', index,v.product_name, v.product_point)">{{v.product_name}}</li>
-                            </ul>
-                            <div class="close" @click="productData = []">关闭</div>
+                        <div class="text">
+                            <textarea placeholder="请输入产品描述" v-model="item.suggest"></textarea>
                         </div>
-                    </div>
-                    
-                    <div class="text">
-                        <textarea placeholder="请输入产品描述" v-model="item.suggest"></textarea>
-                    </div>
-                    <div class="btns cr">
-                        <div class="btn fl_l delete" @click="deleteProduct('stock',index)" v-if="onoff.showDelete">删除</div>
-                        <div class="btn fl_r use" v-if="onoff.showAddClass == 'stock' && index == resdata.stock.products.length-1" @click="addProduct()">新增</div>
+                        <div class="btns cr">
+                            <div class="btn fl_l delete" @click="deleteProduct(index)" v-if="resdata.products.length > 1">删除</div>
+                            <div class="btn fl_r use" v-if="index == resdata.products.length-1" @click="addProduct()">新增</div>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="savebtn cr">
+                <div class="btn save" @click="submit()">保存并预览</div>
+            </div>
         </div>
-        <div class="savebtn cr">
-            <div class="btn save" @click="submit()">保存并预览</div>
-        </div>
+
+        <!-- 选择基金项目 -->
+        <component :is="'Products'" @selectProductEmit="selectProductFn" :style="'transform:translate3d('+ (isSelectFoundShow*10) +'rem,0,0);'"></component>
     </div>
 </template>
 
 <script>
+    import Products from './temp/products.vue'
     export default {
         name:'rules',
         data(){
             return {
                 switch:true,    //提交按钮开关
                 suggest_show:false, //未进行风险评测不显示投资建议
+                isSelectFoundShow:1, //滑动显示隐藏产品列表
+                product_index:0, //正在修改的产品位置
                 onoff:{
-                    showDelete:true, //是否显示产品删除按钮
-                    showAddClass: 'stock',//是否显示产品添加按钮
+
                 },
                 resdata:'', //核心数据
                 productData:[],//提示产品名字
@@ -111,6 +70,9 @@
                     return false;
                 }
             }
+        },
+        components:{
+            Products
         },
         mounted(){
             this.fetchData();
@@ -142,88 +104,44 @@
                         if(_this.resdata.suggest){   //未进行风险评测不显示投资建议
                             _this.suggest_show = true;
                         }
-                        _this.resdata.stock = {products : res.data.data.products};
-                        _this.resdata.fixed = {products : []};
-                        _this.resdata.insurance = {products : []};
-
-                        _this.btnShow();
                     }else{
                         _this.$store.commit('msg','请求错误，请重试');
                     }
                 });
             },
             addProduct(){
-                this.resdata.stock.products.push({
+                this.resdata.products.push({
                     product_name:'',
                     suggest:''
                 });
-                this.btnShow();//显示相关按钮
-            },
-            //提示产品名字
-            searchProduct(str, index){
-                let _this = this;
-                _this.productIndex = index;
-                _this.productStr = str;
-
-                
-                var data = {
-                    token:localStorage.token,
-                    product_name:_this.resdata[str].products[index].product_name
-                }
-                data = this.qs.stringify(data);
-                this.axios.post('/asset/getproduct',data).then(function(res){
-                    if(res.data.code == 1){
-                        _this.productData = res.data.data || [];
-                    }
-                });
-            },
-            selectProduct(str, index, product_name, product_point){
-                this.resdata[str].products[index].product_name = product_name;
-                this.resdata[str].products[index].suggest = product_point;
-                this.productData = [];
             },
             //删除产品
-            deleteProduct(item, index){
+            deleteProduct(index){
                 let _this = this;
                 layer.open({
                     content:'确定要删除该产品吗？',
                     btn:['确定','取消'],
                     yes:function(){
                         layer.closeAll();
-                        _this.resdata[item].products.splice(index, 1);
-                        _this.btnShow();//显示相关按钮
+                        _this.resdata.products.splice(index, 1);
                     }
                 });
             },
-            //添加删除按钮显示开关
-            btnShow(){
-                let _this = this,
-                    stock = _this.resdata.stock.products.length || 0,
-                    fixed = _this.resdata.fixed.products.length || 0,
-                    insurance = _this.resdata.insurance.products.length || 0;
-                _this.onoff.showDelete = stock+fixed+insurance-1;
-                
-                switch(true){
-                    case stock != 0 :
-                    _this.onoff.showAddClass = 'stock';
-                    break;
-
-                    case fixed != 0 :
-                    _this.onoff.showAddClass = 'fixed';
-                    break;
-
-                    case insurance != 0 :
-                    _this.onoff.showAddClass = 'insurance';
-                    break;
-
-                    default:
-                    _this.onoff.showAddClass = 'stock';
-                }
+            //产品选择
+            selectProductFn(pro){
+                this.isSelectFoundShow = 1;
+                if(!pro) return false;
+                this.resdata.products[this.product_index].product_name = pro.product_name;
+                this.resdata.products[this.product_index].suggest = pro.product_point;
+            },
+            showSelectFound(index){
+                this.isSelectFoundShow = 0;
+                this.product_index = index;
             },
             submit(){
                 let _this = this;
 
-                let arr = [].concat(_this.resdata.insurance.products, _this.resdata.fixed.products, _this.resdata.stock.products);
+                let arr = _this.resdata.products;
                 for(var i = 0; i<arr.length; i++){
                     if(arr[i].product_name == ''){
                         _this.$store.commit('msg', '请输入产品名称');
@@ -235,9 +153,6 @@
                 }
                 if(!_this.switch) return false;
                 _this.switch = false;
-
-                //把数据整理成提交格式
-                _this.resdata.products = _this.resdata.stock.products;
 
                 //提交表单
                 let url = '',data = '';
@@ -262,9 +177,19 @@
                     if(res.data.code == 1){
                         _this.$store.commit('msg','保存成功');
                         
+                        var push_asset_id = '';
+                        if(res.data.data){
+                            push_asset_id = res.data.data;
+                            if(res.data.data.length == 0){
+                                push_asset_id = _this.$route.params.assetid;
+                            }
+                        }else{
+                            push_asset_id = _this.$route.params.assetid;
+                        }
+
                         setTimeout(()=>{
                             _this.$router.push({
-                                path:'/capital/'+_this.$route.params.id+'/detail/'+(res.data.data || _this.$route.params.assetid)
+                                path:'/capital/'+_this.$route.params.id+'/detail/'+push_asset_id
                             });
                         },1500);
                     }else{
@@ -277,6 +202,29 @@
 </script>
 
 <style lang="less" scoped>
+    .editContainer{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        top:0;
+        left:0;
+    }
+    .thiscontent{
+        background-color: #fff;
+        transition: .3s;
+    }
+    .show_product_list{
+        text-align: right;
+        padding-bottom: 10px;
+        span{
+            padding:6px 12px;
+            background-color: #5CACEE;
+            color: #fff;
+            font-size: 14px;
+            border-radius: 3px;
+        }
+    }
     .baocuo{
         position: absolute;
         top:0;

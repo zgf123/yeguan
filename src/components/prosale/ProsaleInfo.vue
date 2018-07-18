@@ -14,10 +14,10 @@
 					<div class="lyui_cell_bd lyui_cell_primary">产品全称</div>
 					<div class="lyui_cell_ft">{{proInfo.fund_name}}</div>
 				</div>
-				<div class="lyui_cell prosale_item">
+				<!-- <div class="lyui_cell prosale_item">
 					<div class="lyui_cell_bd lyui_cell_primary">产品经理</div>
 					<div class="lyui_cell_ft">{{proInfo.manager}}</div>
-				</div>
+				</div> -->
 				<div class="lyui_cell prosale_item" v-if="proInfo.administrator">
 					<div class="lyui_cell_bd lyui_cell_primary">基金管理人</div>
 					<div class="lyui_cell_ft">{{proInfo.administrator}}</div>
@@ -30,13 +30,13 @@
 					<div class="lyui_cell_bd lyui_cell_primary">基金期限</div>
 					<div class="lyui_cell_ft">{{proInfo.fund_time}}</div>
 				</div>
-				<div class="lyui_cell prosale_item">
+				<div class="lyui_cell prosale_item" v-if="proInfo.product_id != 790">
 					<div class="lyui_cell_bd lyui_cell_primary">付息周期</div>
 					<div class="lyui_cell_ft">{{proInfo.interest_fxcycle}}</div>
 				</div>
 				<div class="lyui_cell prosale_item" v-if="proInfo.product_point">
 					<div class="lyui_cell_bd lyui_cell_primary">项目亮点</div>
-					<div class="lyui_cell_ft">{{proInfo.product_point}}</div>
+					<div class="lyui_cell_ft text_l" v-html="proInfo.product_point"></div>
 				</div>
 				<div class="lyui_cell prosale_item" v-if="proInfo.product_risk">
 					<div class="lyui_cell_bd lyui_cell_primary">风控</div>
@@ -84,7 +84,7 @@
 				</div>
 				<div class="lyui_cell prosale_item">
 					<div class="lyui_cell_bd lyui_cell_primary">管理费</div>
-					<div class="lyui_cell_ft">{{proInfo.manager_fee}}</div>
+					<div class="lyui_cell_ft">{{proInfo.invest_fee}}</div>
 				</div>
 				<div class="lyui_cell prosale_item">
 					<div class="lyui_cell_bd lyui_cell_primary">认购费</div>

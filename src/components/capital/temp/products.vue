@@ -7,10 +7,10 @@
         <div class="itembox">
             <div class="found_row flex_align lyui_tap_active" v-for="item in searchData" :key="item.product_id" @click="select(item)">
                 <div class="flex_1 text_o">{{item.product_name}}</div>
-                <div class="right">
+                <!-- <div class="right">
                     <span class="guquan" v-if="item.fund_type == '股权'">{{item.fund_type}}</span>
                     <span class="gushou" v-else-if="item.fund_type == '固收'">{{item.fund_type}}</span>
-                </div>
+                </div> -->
             </div>
         </div>
      </div>
@@ -43,9 +43,10 @@
             fetchData(){
                 var _this = this;
                 let data = this.qs.stringify({
-                    token: localStorage.token
+                    token: localStorage.token,
+                    product_name:''
                 });
-                this.axios.post('/huiqian/chooseproducts', data).then(function(res){
+                this.axios.post('/asset/getproduct', data).then(function(res){
                     if(res.data.code == 1){
                         this.resdata = res.data.data;
                     }

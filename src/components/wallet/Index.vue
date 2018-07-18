@@ -12,7 +12,7 @@
                     <h1>{{resdata.account_money}}</h1>
                     <div class="box cr">
                         <div class="left fl_l">
-                            <h2><span class="b">{{resdata.checking_money}}</span>万元</h2>
+                            <h2><span class="b">{{resdata.checking_money}}</span>元</h2>
                             <p>审核中</p>
                         </div>
                         <div class="right fl_r">

@@ -6,11 +6,11 @@
         <router-link tag="div" class="itembox lyui_tap_active" v-for="item in saleList" :key="item.product_id" :to="'/prosale/info/' + item.product_id">
             <div class="sign" v-show="item.status == '募集中' ? false : true">已封闭</div>
             <div class="title">{{item.product_name}}</div>
-            <div class="text">{{item.product_point}}</div>
+            <div class="text" v-html="item.product_point"></div>
             <div class="progress flex_align">
                 <div class="left">募集进度</div>
                 <div class="center flex_1">
-                    <div class="linebox" v-if="item.collect_percent == '0%'">
+                    <div class="linebox" v-if="item.collect_percent == '600%'">
                         <div class="line" :style="'max-width:100%;width:60%;'"></div>
                     </div>
                     <div class="linebox" v-else>
