@@ -6,9 +6,13 @@ Vue.use(Vuex);
 
 let store = new Vuex.Store({
     state: {
-        // baseurl:'http://manager.yeguan.fminxiang.com', //正式环境
-        baseurl:'http://test.manager.yeguan.fminxiang.com', //测试环境
+        baseurl:'http://manager.yeguan.fminxiang.com', //正式环境
+        testbaseurl:'http://test.manager.yeguan.fminxiang.com', //测试环境
         // baseurl:'http://manager.fminxiang.local', //本地测试环境
+
+        domain:'http://app.club.fminxiang.com',     //app端正式域名
+        testdomain:'http://clubtest.fminxiang.com',     //app端测试域名
+        
         walleturl: 'http://licai.yeguan.fminxiang.com', //钱包接口
         // walleturl: 'http://licai.yeguan.local', //本地测试钱包接口
 

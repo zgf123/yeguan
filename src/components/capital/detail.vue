@@ -4,6 +4,9 @@
             <!-- <router-link slot="search" tag="div" class="bianji" :to="'/capital/'+$route.params.id+'/add'">
                 <img src="/public/img/capital_edit_head.png">
             </router-link> -->
+            <div slot="search" class="bianji" @click="screenCut()">
+                <img src="/public/img/screen_cut.png">
+            </div>
         </component>
         <div class="container Page">
             <div class="page_capitalconf">
@@ -129,6 +132,24 @@
                         _this.$store.commit('msg','请求错误，请重试');
                     }
                 });
+            },
+            screenCut(){
+                let _this = this,
+                    domain = this.$store.state.domain;
+
+                if(_this.axios.defaults.baseURL == _this.$store.state.testbaseurl){
+                    domain = _this.$store.state.testdomain;
+                }
+
+                try {
+                    if(cusAndroid){
+                        window.android.screenShot(domain+'/wap/assets/'+_this.$route.params.assetid+'/share');
+                    }else{
+                        window.webkit.messageHandlers.screenShot.postMessage(domain+'/wap/assets/'+_this.$route.params.assetid+'/share');
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
             }
         }
     }

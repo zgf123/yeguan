@@ -5,7 +5,7 @@
 			<div class="iptbox">
 				<div class="row bor_b flex_align">
 					<div class="left"><label for="user_name">账号</label></div>
-					<div class="right"><input type="text" name="user_name" id="user_name" v-model="user_name" placeholder="请输入账号"></div>
+					<div class="right"><input type="text" name="user_name" id="user_name" v-model="user_name" placeholder="请输入姓名拼音"></div>
 				</div>
 				<div class="row bor_b flex_align">
 					<div class="left"><label for="password">密码</label></div>

@@ -144,19 +144,59 @@
                 }.bind(this));
             },
             lookFile(name,link){
+				var _this = this;
             	// window.location.href=link;
 				// link = link.split('\\').join('').split('[\"').join('').split('\"]').join('');
 				// console.log(name,link);
 				// return false;
-				try {
-                    if(cusAndroid){
-                        window.android.readPDF(name,link);
+
+				//后端加水印
+				var data = this.qs.stringify({
+					token:localStorage.token,
+					pdf_url:link,
+				});
+                this.axios.post('/product/readpdf',data).then(function(res){
+					if(res.data.code == 1){
+						link = res.data.data[0];
+						try {
+							if(cusAndroid){
+								window.android.readPDF(name,link);
+							}else{
+								window.webkit.messageHandlers.readPDF.postMessage({pdfName:name,pdfUrl:link});
+							}
+						} catch (error) {
+							window.location.href=link;
+						}
+					}
+                }.bind(this));
+
+				//前端加水印
+				/* var real_name = encodeURIComponent(JSON.parse(localStorage.info).real_name);
+				
+				try{
+					if(cusAndroid){
+                        _this.$router.push({
+							path:'/prosale/pdf',
+							query:{
+								name:name,
+								file:link || 'file.pdf',
+								manager:real_name,
+							}
+						});
                     }else{
-                        window.webkit.messageHandlers.readPDF.postMessage({pdfName:name,pdfUrl:link});
+                        var ioslink = 'http://m.yeguan.fminxiang.com/public/pdfcover/viewer.html?file=' + link + '&name=' + real_name;
+						window.webkit.messageHandlers.readPDF.postMessage({pdfName:name,pdfUrl:ioslink});
                     }
-                } catch (error) {
-                    window.location.href=link;
-                }
+				}catch (error) {
+                    _this.$router.push({
+						path:'/prosale/pdf',
+						query:{
+							name:name,
+							file:link || 'file.pdf',
+							manager:real_name,
+						}
+					});
+				} */
             },
             lookTxt(txt){
             	layer.open({

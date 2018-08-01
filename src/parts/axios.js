@@ -7,9 +7,14 @@ Vue.prototype.axios = axios;
 Vue.prototype.qs = qs;
 
 const baseurl = store.state.baseurl;
+const testbaseurl = store.state.testbaseurl;
+
 // axios 配置
 axios.defaults.timeout = 15000;
-axios.defaults.baseURL = baseurl;
+
+//上线之前必须修改
+axios.defaults.baseURL = baseurl; //正式
+// axios.defaults.baseURL = testbaseurl; //测试
 
 //axios配置
 axios.interceptors.request.use(function (config) {  //配置发送请求的信息

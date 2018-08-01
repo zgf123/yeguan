@@ -2,7 +2,10 @@
     <div>
         <component :is="'Header'">
             <div slot="title" class="com_title text_o">资产配置详情</div>
-            <div slot="search" class="baocuo"><span @click="sendError()">报错</span></div>
+            <div slot="search" class="baocuo">
+                <span @click="sendError()">报错</span>
+                <span @click="screenCut()" style="float:right;border:0;width:48px;padding: 12px;margin:0;"><img width="100%" src="/public/img/screen_cut.png"></span>
+            </div>
         </component>
         <div class="container Page" v-if="resdata">
             <div class="page_capitalconf">
@@ -75,7 +78,7 @@
                   </div>
             </div>
         </div>
-        <div class="savebtn cr" v-if="!Number(resdata.status)">
+        <div class="savebtn cr" v-show="!Number(resdata.status)">
             <div class="btn save" @click.once="sendCustomer()">发送给客户</div>
         </div>
     </div>
@@ -478,6 +481,25 @@
                     opt.push( $.extend(true, {time:key}, _this.resdata.theNextFiveYears[key]) );
                 }
                 drawLine(opt);
+            },
+            //截屏
+            screenCut(){
+                let _this = this,
+                    domain = this.$store.state.domain;
+
+                if(_this.axios.defaults.baseURL == _this.$store.state.testbaseurl){
+                    domain = _this.$store.state.testdomain;
+                }
+
+                try {
+                    if(cusAndroid){
+                        window.android.screenShot(domain+'/wap/assets/'+_this.$route.params.assetid+'/share');
+                    }else{
+                        window.webkit.messageHandlers.screenShot.postMessage(domain+'/wap/assets/'+_this.$route.params.assetid+'/share');
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
             }
         }
     }

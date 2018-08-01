@@ -4,6 +4,7 @@ import Notice from '../components/home/Notice.vue'
 import Prosale from '../components/prosale/Prosale.vue'
 import ProsaleInfo from '../components/prosale/ProsaleInfo.vue'
 import ProsaleItem from '../components/prosale/ProsaleItem.vue'
+import ProsalePdf from '../components/prosale/ProsalePdf.vue'
 import Custom from '../components/custom/Custom.vue'
     import CustomList from '../components/custom/CustomList.vue'
     import CustomDetail from '../components/custom/CustomDetail.vue'
@@ -83,6 +84,15 @@ export default [
         meta: {
             backUrl: '/prosale',
             pageTitle: '产品详情',
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/prosale/pdf',
+        component: ProsalePdf,
+        meta: {
+            backUrl: '',
+            pageTitle: 'pdf预览',
             requiresAuth: true
         }
     },
