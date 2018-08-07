@@ -158,15 +158,21 @@
                 this.axios.post('/product/readpdf',data).then(function(res){
 					if(res.data.code == 1){
 						link = res.data.data[0];
-						try {
-							if(cusAndroid){
-								window.android.readPDF(name,link);
-							}else{
+						if(cusAndroid){
+							window.android.readPDF(name,link);
+						}else{
+							try {
 								window.webkit.messageHandlers.readPDF.postMessage({pdfName:name,pdfUrl:link});
+							} catch (error) {
+								window.location.href=link;
 							}
-						} catch (error) {
-							window.location.href=link;
 						}
+					}else{
+						layer.open({
+							content:'打开pdf文件失败',
+							skin:'msg',
+							time:2
+						});
 					}
                 }.bind(this));
 
