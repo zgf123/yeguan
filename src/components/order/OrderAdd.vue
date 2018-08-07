@@ -111,12 +111,20 @@
         </div>
         <div class="card_face">
             <div class="title">请上传转账凭证照片</div>
-            <div class="cardbox cr">
+            <!-- <div class="cardbox cr">
                 <div class="example">
                     <img src="/public/img/zhuanzhang_ex.jpg" alt="">
                 </div>
                 <div class="card">
                     <component class="upload_pic" :is="'UploadPic'" id="zhuanzhang" ref="zhuanzhangRef" :uploadProp="''" @uploadEmit="zhuanzhangFn"></component>
+                </div>
+            </div> -->
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide" v-for="item in formData.voucher_img" :key="item.id">
+                        <component class="upload_pic" :is="'UploadPic'" :id="'zhuanzhang'+item.id" :ref="'zhuanzhangRef'+item.id" :uploadProp="item.url" @uploadEmit="zhuanzhangFn">
+                        </component>
+                    </div>
                 </div>
             </div>
         </div>
@@ -179,7 +187,12 @@
                     bank_subbranch:'',
                     bank_account_name:'',
                     bank_card_number:'',
-                    voucher_img:'',
+                    voucher_img:[
+                        {
+                            id:0,
+                            url:''
+                        }
+                    ],
                     bankcard_img:''
                 },
                 showBanks:false //银行卡信息是否显示
@@ -217,8 +230,18 @@
                 setTimeout(() => {
                     _this.$refs.touxiangmianRef.uploadInit('#touxiangmian',{type:'idcard'});
                     _this.$refs.guohuimianRef.uploadInit('#guohuimian',{type:'idcard_back'});
-                    _this.$refs.zhuanzhangRef.uploadInit('#zhuanzhang',{type:'voucher_img'});
+                    // _this.$refs.zhuanzhangRef.uploadInit('#zhuanzhang',{type:'voucher_img'});
                     _this.$refs.bankpicRef.uploadInit('#bankpic',{type:'bankcard_img'});
+
+                    _this.formData.voucher_img.forEach((c,i) => {
+                        _this.$refs['zhuanzhangRef'+c.id][0].uploadInit('#zhuanzhang'+c.id,{type:'voucher_img'});
+                    });
+                    
+                    //初始化swiper
+                    window.mySwiper = new Swiper('.swiper-container', {
+                        slidesPerView: 2,
+                        spaceBetween: 20
+                    });
                 }, 0);
             },
             showSelectFound(){
@@ -353,8 +376,41 @@
                 this.formData.idcard_expiry_date = res;
 			},
             //转账凭证
-			zhuanzhangFn(res){
-                this.formData.voucher_img = res;
+			zhuanzhangFn(res, pickel){
+                let _this = this,
+                    length = this.formData.voucher_img.length,
+                    next_id = this.formData.voucher_img[length-1].id+1;
+
+                if(res){
+                    this.formData.voucher_img[length-1].url = res;
+                    this.formData.voucher_img.push({
+                        id:next_id,
+                        url:''
+                    });
+                    // console.log(this.formData.voucher_img);
+                    setTimeout(() => {
+                        _this.$refs['zhuanzhangRef'+next_id][0].uploadInit('#zhuanzhang'+next_id, {type:'voucher_img'});
+                        //初始化swiper
+                        window.mySwiper.update();
+                    }, 0);
+                }else{
+                    //删除已上传图片
+                    let id = pickel.substr(-2);
+                    if(isNaN(id)){
+                        id = pickel.substr(-1);
+                    }
+                    let imgArr = this.formData.voucher_img;
+                    imgArr.forEach( (c,i) => {
+                        if(c.id == id){
+                            _this.formData.voucher_img.splice(i,1);
+                        }
+                    } );
+
+                    setTimeout(() => {
+                        //初始化swiper
+                        window.mySwiper.update();
+                    }, 0);
+                }
 			},
             //银行卡照片
 			bankpicFn(res){
@@ -382,6 +438,7 @@
                 }
                 //验证开始 
                 let d = this.formData;
+                
                 let data = {
                     token:localStorage.token,
                     cid: d.cid,
@@ -398,7 +455,7 @@
                     bank_subbranch: d.bank_subbranch,
                     bank_account_name: d.bank_account_name,
                     bank_card_number: d.bank_card_number,
-                    voucher_img: d.voucher_img,
+                    voucher_img: [],
                     bankcard_img: d.bankcard_img,
                     idcard_img: d.idcard_img,
                     customer_idcard_address: d.idcard_address,
@@ -424,6 +481,15 @@
                     this.$store.commit('msg','进账金额不能小于零');
                     return false;
                 }
+
+                d.voucher_img.forEach((c,i) => {
+                    if(i == 0){
+                        data.voucher_img.push(c.url);
+                    }
+                    if(c.url && i>0){
+                        data.voucher_img.push(c.url);
+                    }
+                });
 
                 //录单完成后，提示：请确认是否完成进账
                 /* if(data.is_sub == 0){
@@ -469,6 +535,10 @@
 
 
 <style lang="less" scoped="scoped">
+    .swiper-container{
+        padding: 0 15px;
+        overflow:visible;
+    }
     .shibie{
         padding:0 15px;color:#fe6e6e;font-size:12px;padding-top:10px;
         text-align: right;

@@ -224,6 +224,14 @@
 						}
 					});
 				})
+			},
+			destroy(){
+				var _this = this;
+				_this.uploader.destroy();
+			},
+			reset(){
+				var _this = this;
+				_this.uploader.reset();
 			}
         }
     }

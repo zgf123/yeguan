@@ -79,11 +79,13 @@
             <div class="title">请上传转账凭证照片</div>
             <div class="swiper-container">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide" v-for="(item,index) in formData.jzData" :key="index">
-                        <component class="upload_pic" :is="'UploadPic'" :id="'zhuanzhang'+index" :ref="'zhuanzhangRef'" :uploadProp="item.jz_voucher_img" @uploadEmit="zhuanzhangFn">
-                        </component>
-                        <div style="text-align:center;color:#333;margin-top: 10px;font-size:15px;">{{index | numFilter}} {{index == 0 ? '进账':'追加'}}金额凭证</div>
-                    </div>
+                    <template v-for="(item,index) in formData.jzData">
+                        <div class="swiper-slide" v-for="(c,i) in item.jz_voucher_img" :key="i">
+                            <component class="upload_pic" :is="'UploadPic'" :id="i+'zhuanzhang'+index" :ref="'zhuanzhangRef'" :uploadProp="c" @uploadEmit="zhuanzhangFn">
+                            </component>
+                            <div style="text-align:center;color:#333;margin-top: 10px;font-size:15px;">{{index | numFilter}} {{index == 0 ? '进账':'追加'}}金额凭证</div>
+                        </div>
+                    </template>
                 </div>
             </div>
         </div>
@@ -262,7 +264,7 @@
                     _this.$refs.guohuimianRef.uploadInit('#guohuimian',{type:'idcard_back'});
                     _this.$refs.bankpicRef.uploadInit('#bankpic',{type:'bankcard_img'});
                     //初始化转账凭证上传
-                    _this.formData.jzData.forEach((c,i) => {
+                    // _this.formData.jzData.forEach((c,i) => {
                         //如果财务审核通过，则不允许修改
                         /* if(c.jz_status == 1){
                             if(c.jz_voucher_img){
@@ -291,7 +293,11 @@
                         }else{
                             _this.$refs.zhuanzhangRef[i].uploadInit('#zhuanzhang'+i,{type:'voucher_img'});
                         } */
-                        _this.$refs.zhuanzhangRef[i].uploadInit('#zhuanzhang'+i,{type:'voucher_img'});
+                        // _this.$refs.zhuanzhangRef[i].uploadInit('#zhuanzhang'+i,{type:'voucher_img'});
+                    // });
+                    $('.swiper-container .swiper-slide').each(function(i,c){
+                        var id = $(c).children(0).attr('id');
+                        _this.$refs.zhuanzhangRef[i].uploadInit('#'+id, {type:'voucher_img'});
                     });
                     //初始化swiper
                     window.mySwiper = new Swiper('.swiper-container', {
@@ -396,7 +402,13 @@
                 if(isNaN(index)){
                     index = pickel.substr(-1);
                 }
-                this.formData.jzData[index].jz_voucher_img = res;
+
+                let id = pickel.substr(1,2);
+                if(isNaN(id)){
+                    id = pickel.substr(1,1);
+                }
+
+                this.formData.jzData[index].jz_voucher_img[id] = res;
 			},
             //银行卡照片
 			bankpicFn(res){

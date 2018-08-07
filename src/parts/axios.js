@@ -13,8 +13,8 @@ const testbaseurl = store.state.testbaseurl;
 axios.defaults.timeout = 15000;
 
 //上线之前必须修改
-axios.defaults.baseURL = baseurl; //正式
-// axios.defaults.baseURL = testbaseurl; //测试
+// axios.defaults.baseURL = baseurl; //正式
+axios.defaults.baseURL = testbaseurl; //测试
 
 //axios配置
 axios.interceptors.request.use(function (config) {  //配置发送请求的信息
